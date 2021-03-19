@@ -45,3 +45,13 @@ Description:
 2. The meal plan must satisfy users' requirement of "tradition", which is inserted by the user. For instance, on Sunday, the user only wants to cook dinner. 
 
 3. The meal plan must satisfy users' preferences of the number of meals daily, which is inserted by the user. For instance, person A may want to eat 3 times a day and person B may want to eat only 2 times a day. 
+
+V4. The meal plan can be modified by the users to best serve their preference in that a specific day in the period.
+
+V5. The meal plan must avoid dishes that the users are allergic to, which are inserted by the user. For instance, a person may be allergic to peanut. 
+
+V6. MealPlan must allow users to pick which dishes they want to cook from the default list of dishes. Only those dishes are included in the final meal plan. 
+
+IV7. MealPlan must allow users to insert their pre-cooked meals. This means that these pre-cooked meals must be included in the final meal plan. 
+
+IV8. MealPlan must allow users to change some meals in the final meal plan as long as the nutrient needs are still satisfied. 
