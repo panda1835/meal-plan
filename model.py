@@ -5,7 +5,7 @@ class Model:
 		'''
 		pass
 
-	def user_info_to_database(nutrition_standard,
+	def set_user_info(self, nutrition_standard,
                            height,
                            weight,
                            age,
@@ -29,18 +29,29 @@ class Model:
         """
 
         pass
-    def user_nutritious_restriction_to_database():
+
+    def get_user_info(self):
+
+        # return User
+        pass
+
+    def set_user_nutritious_restriction(self):
         """
         To be determined
         """
         pass
 
-    def user_defined_meal_to_database(name,
+    def get_user_nutritious_restriction(self):
+
+        # return TBD
+        pass
+
+    def set_user_defined_meal(self,name,
                          time,
                          set_of_dishes,
                          nutritious_restriction,
                          regular,
-                         flexible)
+                         flexible):
 
         """
         Store user defined meal to database
@@ -65,7 +76,17 @@ class Model:
         
         pass
 
-    def recipe_to_database(name,
+    def get_user_defined_meal_names(self):
+        # return list of Meal Names in UserDefinedMeal db
+
+        pass
+
+    def get_user_defined_meal(self, name):
+
+        # return Meal object whose name is name
+        pass
+    
+    def set_recipe(self, name,
                            serving_size,
                            cooking_time,
                            tag,
@@ -97,7 +118,19 @@ class Model:
         """
         pass 
 
-	def mealplan(self, 
+    def get_recipe_names(self):
+        # return list of Recipe Names in Recipe db
+
+        pass
+
+
+    def get_recipe(self, name):
+
+        # return Recipe object whose name is name
+        pass
+
+    def set_mealplan(self,
+                 period, # the period of the plan  
                  free_time_to_cook,
                  nutritious_restriction,
                  recipes_list,
@@ -107,5 +140,11 @@ class Model:
         """
         Generate new mealplan
         """
-		pass
+	pass
   
+    def get_mealplan(self, period):
+
+        """
+        get mealplan of a specific period
+        """
+	pass
