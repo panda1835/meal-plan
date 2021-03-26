@@ -40,6 +40,7 @@ class Model:
     connection.commit()
 
     def __init__(self):
+        
         pass
 
     def set_user_info(self, nutrition_standard, height, weight, age, meal_list,):
@@ -222,13 +223,14 @@ class Model:
 
         meal_plan = [] 
         meal_plan += fixed_meals + precooked_meals 
+        
         for nutrient in nutritious_restriction:
             nutritious_restriction[nutrient] -= fixed_meals.nutrient 
 
         while not nutritious_restriction.isEmpty(): 
             for row in random.choice(food):  
                 for recipe, time_cooking in row:  
-                    if time_cooking < free_time_to_cook:  
+                    if time_cooking <= free_time_to_cook:  
                         meal_plan.append(recipe)             
         return meal_plan 
 
