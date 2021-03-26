@@ -196,25 +196,41 @@ class Model:
         Model.connection.commit()
         return data
 
-    def set_mealplan(self,
-                period, # the period of the plan  
-                free_time_to_cook,
-                nutritious_restriction,
-                recipes_list,
-                precooked_meals,
-                fixed_meals):
+ 
+    def set_mealplan(self, 
+                period, # the period of the plan   
+                free_time_to_cook, 
+                nutritious_restriction, 
+                recipes_list,  
+                precooked_meals, 
+                fixed_meals): 
 
-        meal_plan = []
-        meal_plan += fixed_meals + precooked_meals
+        # get recipe_list and its cooking time 
+        Model.cursor.execute('''SELECT recipe_name, cooking_time  
+                                FROM Recipe''') 
+        food =  Model.connection.fetchall()  
+
+        # update nutritous_retriction in database UserDefinedMeal 
+        Model.cursor.execute(''' UPDATE retrictious_restriction r 
+                    SET r.retrictious_restriction = %s 
+                ''', nutritious_restriction) 
+
+        # get nutritous_retriction 
+        Model.cursor.execute('''SELECT nutritous_retriction FROM UserDefinedMeal''') 
+        nutritious_restriction = Model.connection.fetchone() #str type  
+        json.loads(nutritious_restriction) # convert to list  
+
+        meal_plan = [] 
+        meal_plan += fixed_meals + precooked_meals 
         for nutrient in nutritious_restriction:
-            nutritious_restriction[nutrient] -= fixed_meals.nutrient
+            nutritious_restriction[nutrient] -= fixed_meals.nutrient 
 
-        while not nutritious_restriction.isEmpty():
-            random_recipe = random.choice(recipes_list)
-            if is_suitable(random_recipe, nutritious_restriction):
-                meal_plan.add(random_recipe)
-
-	    return mealplan
+        while not nutritious_restriction.isEmpty(): 
+            for row in random.choice(food):  
+                for recipe, time_cooking in row:  
+                    if time_cooking < free_time_to_cook:  
+                        meal_plan.append(recipe)             
+        return meal_plan 
 
     def get_mealplan(self, period):
         pass
