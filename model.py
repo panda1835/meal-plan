@@ -1,5 +1,6 @@
 import sqlite3
 import json
+import random
 
 class Model:
     connection  = sqlite3.connect('mealplan.db')
@@ -27,28 +28,21 @@ class Model:
                 energy INTEGER, steps_taken TEXT)
     '''
 
+    command_createMealPlan = ''' 
+        CREATE TABLE IF NOT EXISTS
+        MealPlan()
+    ''' 
+
     cursor.execute(command_createUserInfo)
     cursor.execute(command_createUserDefinedMeal) 
     cursor.execute(command_createRecipe)
 
     connection.commit()
 
-    def __init__(self, nutrition_standard, height, weight, age, meal_list,
-                meal_name, time, set_of_dishes, nutritious_restriction, regular, flexible):
-        
-        self.nutrition_standard = nutrition_standard
-        self.height = height
-        self.weight = weight
-        self.age = age
-        self.meal_list = meal_list
-        self.meal_name = meal_name
-        self.time = time
-        self.set_of_dishes = set_of_dishes
-        self.nutritious_restriction = nutritious_restriction
-        self.regular = regular
-        self.flexible = flexible
+    def __init__(self):
+        pass
 
-    def set_user_info(self):
+    def set_user_info(self, nutrition_standard, height, weight, age, meal_list,):
         """
         Store user info from surveys to database
         @param
@@ -67,10 +61,10 @@ class Model:
         age: Int
         meal_list: List<String>
         """
-        self.meal_list = json.dumps(self.meal_list) #convert into str type
+        meal_list = json.dumps(meal_list) #convert into str type
         Model.cursor.execute('''INSERT INTO UserInfo
                         VALUES (%s, %s, %s, %s, %s)''',
-                        (self.nutrition_standard, self.height, self.weight, self.age, self.meal_list)) 
+                        (nutrition_standard, height, weight, age, meal_list)) 
 
         Model.connection.commit()
 
@@ -92,7 +86,8 @@ class Model:
         """
         pass
 
-    def set_user_defined_meal(self):
+    def set_user_defined_meal(self, meal_name, time, set_of_dishes,
+                            nutritious_restriction, regular, flexible,):
 
         """
         Store user defined meal to database
@@ -113,16 +108,16 @@ class Model:
         nutritious_restriction: To be determined #string
         regular: Bool
         flexible: Bool
-        """
-        start_time = str(self.time[0]) + ":" + str (self.time[1])
-        end_time = str(self.time[2]) + ":" + str(self.time[3])
+        """        
+        start_time = str(time[0]) + ":" + str(time[1])
+        end_time = str(time[2]) + ":" + str(time[3])
 
-        self.set_of_dishes = json.dumps(self.set_of_dishes) #serialize list datatype
+        set_of_dishes = json.dumps(set_of_dishes) #serialize list datatype
 
         Model.cursor.execute('''INSERT INTO UserDefinedMeal
                         VALUES (%s, %s, %s, %s, %s, %s, %s)''',
-                        (self.meal_name, start_time, end_time, self.set_of_dishes,
-                        self.nutritious_restriction, self.regular, self.flexible)) 
+                        (meal_name, start_time, end_time, set_of_dishes,
+                        nutritious_restriction, regular,flexible)) 
 
         Model.connection.commit() 
         
@@ -133,29 +128,25 @@ class Model:
         data = Model.connection.fetchall()
         Model.connection.commit()
 
-        return data 
+        return data
 
 
     def get_user_defined_meal(self, meal_name):
 
-        Model.cursor.execute('''SELECT * FROM UserDefinedMeal WHERE name = (%s)''', self.meal_name)
+        Model.cursor.execute('''SELECT * FROM UserDefinedMeal
+                                WHERE name = (%s)''', meal_name)
         data = Model.connection.fetchone() 
         Model.connection.commit()
 
         return data
         
     
-    def set_recipe(self, recipe_name,
-                        serving_size,
-                        cooking_time,
-                        tag,
-                        ingredients,
-                        nutritions,
-                        steps_taken):
+    def set_recipe(self, recipe_name, serving_size, cooking_time, tag,
+                    ingredients, nutritions, steps_taken):
         """
         Store new recipe to database
         @param
-        name: String
+        recipe_name: String
         serving_size: Int
         cooking_time: Int
         tag: String
@@ -165,7 +156,7 @@ class Model:
         
         Database: Recipe
         @column
-        name: String
+        recipe_name: String
         serving_size: Int
         cooking_time: Int
         tag: String
@@ -175,24 +166,35 @@ class Model:
         energy: Int
         steps_taken: String
         """
-        #self.meal_list = json.dumps(self.meal_list) #convert into str type
-        Model.cursor.execute('''INSERT INTO Recipe
-                        VALUES (%s, %s, %s, %s)''',
-                        (self.name, self.serving_size, self.tag, 
-                        self.ingredient_name, self.height, self.weight, self.age, self.meal_list)) 
+        ingredient = ingredients[0]
+        amount = ingredients[1]  
+        nutrition_name = nutritions[0] 
+        energy = nutritions[1]  
 
+        Model.cursor.execute('''INSERT INTO Recipe
+                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)''',
+                        (recipe_name, serving_size, cooking_time, tag, 
+                        ingredient, amount, 
+                        nutrition_name, energy,
+                        steps_taken))
+        
         Model.connection.commit()
 
     def get_recipe_names(self):
         # return list of Recipe Names in Recipe db
+        Model.cursor.execute(''' SELECT recipe_name FROM Recipe''')
+        data = Model.connection.fetchall() 
+        Model.connection.commit() 
 
-        pass
+        return data 
 
-
-    def get_recipe(self, name):
-
+    def get_recipe(self, name):#  
         # return Recipe object whose name is name
-        pass
+        Model.cursor.execute(''' SELECT * FROM Recipe 
+                                WHERE recipe_name = %s ''', name) 
+        data = Model.connection.fetchone()
+        Model.connection.commit()
+        return data
 
     def set_mealplan(self,
                 period, # the period of the plan  
@@ -202,14 +204,17 @@ class Model:
                 precooked_meals,
                 fixed_meals):
 
-        """
-        Generate new mealplan
-        """
-    pass
+        meal_plan = []
+        meal_plan += fixed_meals + precooked_meals
+        for nutrient in nutritious_restriction:
+            nutritious_restriction[nutrient] -= fixed_meals.nutrient
+
+        while not nutritious_restriction.isEmpty():
+            random_recipe = random.choice(recipes_list)
+            if is_suitable(random_recipe, nutritious_restriction):
+                meal_plan.add(random_recipe)
+
+	    return mealplan
 
     def get_mealplan(self, period):
-
-        """
-        get mealplan of a specific period
-        """
-    pass
+        pass
