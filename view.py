@@ -18,6 +18,8 @@ class View(tk.Tk):
         container = tk.Frame(self)
         container.grid(column = 0, row = 0)
 
+        self.user_info = {}
+
         # initializing frames to an empty array
         self.frames = {}
 
@@ -45,6 +47,10 @@ class View(tk.Tk):
         frame = self.frames[current_frame]
         frame.tkraise()
 
+    def next(self, main_view, field, info, next_frame):
+        main_view.show_frame(next_frame)
+        main_view.user_info[field] = info.get()
+        print(main_view.user_info)
 class CreateNutritionPlan(tk.Frame):
     '''
     
@@ -60,19 +66,17 @@ class CreateNutritionPlan(tk.Frame):
         # the combobox
         valuelist = [1,2,3]
         nutrition_plan = tk.StringVar()
-        combo_box = ttk.Combobox(parent, width = 15, values = valuelist, 
-        textvariable = nutrition_plan)
+        combo_box = ttk.Combobox(parent, width = 15, values = valuelist, textvariable = nutrition_plan)
+        
         
         # the back & next buttons
-        back_but = tk.Button(parent, text = "Back", bg = "Green", relief = "flat")
         next_but = tk.Button(parent, text ="Next", bg = "Green", relief = "flat", 
-        command = lambda : main_view.show_frame(CreateBodyCondition))
+        command = lambda : main_view.next(main_view, "Plan", nutrition_plan, CreateBodyCondition))
         
         # make all elements visible by using grid
         parent.grid(column = 0, row = 0)
         title.grid(column = 0, row = 0, columnspan = 3, pady = 10, ipadx = 0)
         combo_box.grid (column = 1, row = 2, pady = 30)
-        back_but.grid(column = 0, row = 3, padx = 15, pady = 10)
         next_but.grid(column = 2, row = 3, padx = 15, pady = 10)
 
 
@@ -96,11 +100,16 @@ class CreateBodyCondition(tk.Frame):
         age = tk.Label(parent, text = "Age", bg = "white")
         age_entry = ttk.Entry(parent, width = 10)
 
+        height_info = height_entry.get()
+        weight_info = weight_entry.get()
+        age_info = age_entry.get()
+
         #the back & next buttons
         back_but = tk.Button(parent, text = "Back", bg = "Green", relief = "flat", 
         command = lambda : main_view.show_frame(CreateNutritionPlan))
         next_but = tk.Button(parent, text ="Next", bg = "Green", relief = "flat", 
-        command = lambda : main_view.show_frame(CreatePlanPeriod))
+        # command = lambda : main_view.show_frame(CreatePlanPeriod))
+        command = lambda : main_view.next(main_view, "Body", (height_info, weight_info, age_info), CreatePlanPeriod))
 
         # make all elements visible by using grid
         parent.grid(column = 0, row = 0)
@@ -167,26 +176,17 @@ class CreateUserDefinedMeal(tk.Frame):
         canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
 
         canvas.configure(yscrollcommand=scrollbar.set)
-
-        # for i in range(50):
-        #     ttk.Label(scrollable_frame, text="Sample scrolling label").pack()
-        # main_view.frames[CreateSubUserDefinedMeal] = CreateSubUserDefinedMeal(scrollable_frame, main_view)
-        CreateSubUserDefinedMeal(scrollable_frame, main_view).pack()
-        CreateSubUserDefinedMeal(scrollable_frame, main_view).pack()
-        CreateSubUserDefinedMeal(scrollable_frame, main_view).pack()
-        CreateSubUserDefinedMeal(scrollable_frame, main_view).pack()
-        # main_view.show_frame(CreateSubUserDefinedMeal)
-
         
-
         # the title of the frame
         title = tk.Label(parent,text = "Set plan period", font = TITLEFONT, bg = "white")
+        add_but = tk.Button(parent, text = "+", bg = "grey", command = lambda: self.add_sub_defined_meal(scrollable_frame, main_view))
         back_but = tk.Button(parent, text = "Back", bg = "Green", relief = "flat")
         next_but = tk.Button(parent, text ="Next", bg = "Green", relief = "flat")
         
         # make all elements visible by using grid
         parent.grid(column = 0, row = 0)
         title.grid(column = 0, row = 0, columnspan = 3, pady = 10)
+        add_but.grid(column = 2, row = 0)
 
         container.grid(column = 1, row = 1)
         canvas.pack(side="left", fill="both", expand=True)
@@ -196,29 +196,34 @@ class CreateUserDefinedMeal(tk.Frame):
         back_but.grid(column = 0, row = 3, padx = 15, pady = 10)
         next_but.grid(column = 2, row = 3, padx = 15, pady = 10)
 
+    def add_sub_defined_meal(self, scrollable_frame, main_view):
+        print("hello")
+        CreateSubUserDefinedMeal(scrollable_frame, main_view).pack()  
+
 class CreateSubUserDefinedMeal(tk.Frame):
 
     def __init__(self, parent, main_view):
         tk.Frame.__init__(self, parent)
         parent = tk.Frame(self, bg = "white")
         #instantiate wireframe's components and position them within the frame
-        del_meal          = tk.Button(parent, text = "-", bg ="grey")
+
+        del_meal = tk.Button(parent, text = "-", bg ="grey", command = self.destroy)
+
+        name_label = tk.Label(parent, text = "Name", bg ="grey", anchor = "w", justify="left", pady=5, padx=5)
+        name_entry = tk.Entry(parent)
         
-        name_label        = tk.Label(parent, text = "Name", bg ="grey", anchor = "w", justify="left", pady=5, padx=5)
-        name_entry        = tk.Entry(parent)
-        
-        time_label        = tk.Label(parent, text = "Time", bg ="grey")
+        time_label = tk.Label(parent, text = "Time", bg ="grey")
         valuelist = ["05:00","05:15","05:30","05:45","06:00","06:15","06:30","06:45","07:00","07:15","07:30","07:45",
                      "08:00","08:15","08:30","08:45","09:00","09:15","09:30","09:45","10:00","10:15","10:30","10:45",
-                     "11:0","11:15","11:30","11:45","12:0","12:15","12:30","12:45","13:0","13:15","13:30","13:45",
-                     "14:0","14:15","14:30","14:45","15:0","15:15","15:30","15:45","16:0","16:15","16:30","16:45",
-                     "17:0","17:15","17:30","17:45","18:0","18:15","18:30","18:45","19:0","19:15","19:30","19:45",
-                     "20:0","20:15","20:30","20:45","21:0","21:15","21:30","21:45","22:0","22:15","22:30","22:45"]
+                     "11:00","11:15","11:30","11:45","12:00","12:15","12:30","12:45","13:00","13:15","13:30","13:45",
+                     "14:00","14:15","14:30","14:45","15:00","15:15","15:30","15:45","16:00","16:15","16:30","16:45",
+                     "17:00","17:15","17:30","17:45","18:00","18:15","18:30","18:45","19:00","19:15","19:30","19:45",
+                     "20:00","20:15","20:30","20:45","21:00","21:15","21:30","21:45","22:00","22:15","22:30","22:45"]
         start_time   = tk.StringVar()
         end_time     = tk.StringVar()
 
-        time_start_combo  = ttk.Combobox(parent, width = 15, values = valuelist, textvariable = start_time)
-        time_end_combo    = ttk.Combobox(parent, width = 15, values = valuelist, textvariable = end_time)
+        time_start_combo  = ttk.Combobox(parent, width = 5, values = valuelist, textvariable = start_time)
+        time_end_combo    = ttk.Combobox(parent, width = 5, values = valuelist, textvariable = end_time)
         dash_label        = tk.Label(parent, text = "-")
         # time_start_combo.bind("<<ComboboxSelected>>", self.is_checked)
         # time_end_combo.bind("<<ComboboxSelected>>", self.is_checked)
