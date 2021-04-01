@@ -23,8 +23,8 @@ class Model:
 
     command_createRecipe = '''
         CREATE TABLE IF NOT EXISTS
-        Recipe(name TEXT, serving_size INTEGER, cooking_time INTEGER, tag TEXT,
-                ingredient_name TEXT, amount INT, nutrition_name TEXT
+        Recipe(recipe_name TEXT, serving_size INTEGER, cooking_time INTEGER, tag TEXT,
+                ingredient_name TEXT, amount INT, nutrition_name TEXT,
                 energy INTEGER, steps_taken TEXT)
     '''
 
@@ -40,10 +40,9 @@ class Model:
     connection.commit()
 
     def __init__(self):
-        
         pass
 
-    def set_user_info(self, nutrition_standard, height, weight, age, meal_list,):
+    def set_user_info(nutrition_standard, height, weight, age, meal_list,):
         """
         Store user info from surveys to database
         @param
@@ -53,7 +52,6 @@ class Model:
         weight: Int
         age: Int
         meal_list: List<String>
-
         Database: UserInfo
         @column
         nutrition_standard: String
@@ -64,30 +62,31 @@ class Model:
         """
         meal_list = json.dumps(meal_list) #convert into str type
         Model.cursor.execute('''INSERT INTO UserInfo
-                        VALUES (%s, %s, %s, %s, %s)''',
+                        VALUES (?, ?, ?, ?, ?)''',
                         (nutrition_standard, height, weight, age, meal_list)) 
 
         Model.connection.commit()
 
-    def get_user_info(self):
+    def get_user_info():
         Model.cursor.execute(''' SELECT * FROM UserInfo ''' )  
-        data = Model.connection.fetchone()
+        data = Model.cursor.fetchall()
+        Model.connection.commit()
 
         return data 
 
-    def set_user_nutritious_restriction(self):
+    def set_user_nutritious_restriction():
         """
         To be determined
         """
         pass
 
-    def get_user_nutritious_restriction(self):
+    def get_user_nutritious_restriction():
         """
         To be determined
         """
         pass
 
-    def set_user_defined_meal(self, meal_name, time, set_of_dishes,
+    def set_user_defined_meal(meal_name, time, set_of_dishes,
                             nutritious_restriction, regular, flexible,):
 
         """
@@ -99,7 +98,6 @@ class Model:
         nutritious_restriction: To be determined
         regular: Bool
         flexible: Bool
-
         Database: UserDefinedMeal
         @column
         name: String
@@ -116,43 +114,42 @@ class Model:
         set_of_dishes = json.dumps(set_of_dishes) #serialize list datatype
 
         Model.cursor.execute('''INSERT INTO UserDefinedMeal
-                        VALUES (%s, %s, %s, %s, %s, %s, %s)''',
+                        VALUES (?, ?, ?, ?, ?, ?, ?)''',
                         (meal_name, start_time, end_time, set_of_dishes,
                         nutritious_restriction, regular,flexible)) 
 
         Model.connection.commit() 
         
 
-    def get_user_defined_meal_names(self):
+    def get_user_defined_meal_names():
         # return list of Meal Names in UserDefinedMeal db
         Model.cursor.execute(''' SELECT name FROM UserDefinedMeal ''' )  
-        data = Model.connection.fetchall()
+        data = Model.cursor.fetchall()
         Model.connection.commit()
 
         return data
 
 
-    def get_user_defined_meal(self, meal_name):
+    def get_user_defined_meal(meal_name):
 
         Model.cursor.execute('''SELECT * FROM UserDefinedMeal
-                                WHERE name = (%s)''', meal_name)
-        data = Model.connection.fetchone() 
+                                WHERE name = (?)''', (meal_name,))
+        data = Model.cursor.all()
         Model.connection.commit()
 
         return data
-        
-    
-    def set_recipe(self, recipe_name, serving_size, cooking_time, tag,
+
+    def set_recipe(recipe_name, serving_size, cooking_time, tag,
                     ingredients, nutritions, steps_taken):
         """
         Store new recipe to database
         @param
         recipe_name: String
         serving_size: Int
-        cooking_time: Int
+        cooking_time: Int                 # i think this need to be float
         tag: String
         ingredients: (String, Int)
-        nutritions: (String, Int)
+        nutritions: (String, Int)         # i think this need to be float
         steps_taken: String
         
         Database: Recipe
@@ -167,39 +164,38 @@ class Model:
         energy: Int
         steps_taken: String
         """
-        ingredient = ingredients[0]
+        ingredient_name = ingredients[0]
         amount = ingredients[1]  
         nutrition_name = nutritions[0] 
         energy = nutritions[1]  
 
         Model.cursor.execute('''INSERT INTO Recipe
-                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)''',
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)''',
                         (recipe_name, serving_size, cooking_time, tag, 
-                        ingredient, amount, 
+                        ingredient_name, amount,
                         nutrition_name, energy,
                         steps_taken))
         
         Model.connection.commit()
 
-    def get_recipe_names(self):
+    def get_recipe_names():
         # return list of Recipe Names in Recipe db
         Model.cursor.execute(''' SELECT recipe_name FROM Recipe''')
-        data = Model.connection.fetchall() 
+        data = Model.cursor.fetchall()
         Model.connection.commit() 
 
         return data 
 
-    def get_recipe(self, name):#  
+    def get_recipe(name):#
         # return Recipe object whose name is name
         Model.cursor.execute(''' SELECT * FROM Recipe 
-                                WHERE recipe_name = %s ''', name) 
-        data = Model.connection.fetchone()
+                                WHERE recipe_name = (?) ''', (name,))
+        data = Model.cursor.fetchone()
         Model.connection.commit()
         return data
 
  
-    def set_mealplan(self, 
-                period, # the period of the plan   
+    def set_mealplan(period, # the period of the plan
                 free_time_to_cook, 
                 nutritious_restriction, 
                 recipes_list,  
@@ -209,28 +205,27 @@ class Model:
         # get recipe_list and its cooking time 
         Model.cursor.execute('''SELECT recipe_name, cooking_time  
                                 FROM Recipe''') 
-        food =  Model.connection.fetchall()  
+        food =  Model.cursor.fetchall()
 
         # update nutritous_retriction in database UserDefinedMeal 
         Model.cursor.execute(''' UPDATE retrictious_restriction r 
-                    SET r.retrictious_restriction = %s 
+                    SET r.retrictious_restriction = ? 
                 ''', nutritious_restriction) 
 
         # get nutritous_retriction 
         Model.cursor.execute('''SELECT nutritous_retriction FROM UserDefinedMeal''') 
-        nutritious_restriction = Model.connection.fetchone() #str type  
+        nutritious_restriction = Model.cursor.fetchone() #str type
         json.loads(nutritious_restriction) # convert to list  
 
         meal_plan = [] 
         meal_plan += fixed_meals + precooked_meals 
-        
         for nutrient in nutritious_restriction:
             nutritious_restriction[nutrient] -= fixed_meals.nutrient 
 
         while not nutritious_restriction.isEmpty(): 
             for row in random.choice(food):  
                 for recipe, time_cooking in row:  
-                    if time_cooking <= free_time_to_cook:  
+                    if time_cooking < free_time_to_cook:  
                         meal_plan.append(recipe)             
         return meal_plan 
 
