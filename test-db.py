@@ -1,10 +1,22 @@
 from model import Model
 
 def create():
-    Model.set_user_info("fat", 170, 37, 26, ["mom cooking", "anything"])
-    Model.set_user_defined_meal("morning", [18,00,20,00], ["chicken soup", "beef rice"],
-                                "idk?", False, True)
-    Model.set_recipe("chicken soup", 1, 1, "fast food", ("chicken", 1), ("calories", 1), "take two steps")
+    UserInfo = {'nutrition_standard': "fat", 'height': 170, 'weight': 37,
+                'age': 26, 'meal_list': ["mom cooking", "anything"]}
+    UserDefinedMeal = {'meal_name': "morning", 'time': [18,00,20,00],
+                        'set_of_dishes': ["chicken soup", "beef rice"],
+                        'nutritious_restriction': "idk?", 'regular': False,
+                        'flexible': True}
+    Recipe = {'recipe_name': "chicken soup", 'serving_size': 1,
+                'cooking_time': 1, 'tag': "fast food",
+                'ingredients': ("chicken", 1.0),
+                'nutritions': ("calories", 1.0),
+                'steps_taken': "take two steps"}
+    
+    
+    Model.set_user_info(UserInfo)
+    Model.set_user_defined_meal(UserDefinedMeal)
+    Model.set_recipe(Recipe)
 
 def test():
     print("__User information__")
@@ -17,4 +29,5 @@ def test():
 def deleteRecipe():
     Model.cursor.execute("DROP TABLE Recipe")
 
+create()
 test()
