@@ -11,8 +11,7 @@ class Model:
 
     command_createUserInfo = '''
         CREATE TABLE IF NOT EXISTS 
-        UserInfo(nutrition_standard TEXT, height INTEGER, weight INTEGER, 
-                age INTEGER, meal_list TEXT)
+        UserInfo(nutrition_standard TEXT, height INTEGER, weight INTEGER, age INTEGER, meal_list TEXT)
     ''' 
 
     command_createUserDefinedMeal = ''' 
@@ -24,11 +23,15 @@ class Model:
 
     command_createRecipe = '''
         CREATE TABLE IF NOT EXISTS
-        Recipe(recipe_name TEXT, serving_size INTEGER,
-                cooking_time INTEGER, tag TEXT, ingredient_name TEXT,
-                amount INT, nutrition_name TEXT,
+        Recipe(recipe_name TEXT, serving_size INTEGER, cooking_time INTEGER, tag TEXT,
+                ingredient_name TEXT, amount INT, nutrition_name TEXT,
                 energy INTEGER, steps_taken TEXT)
     '''
+
+    command_createMealPlan = ''' 
+        CREATE TABLE IF NOT EXISTS
+        MealPlan()
+    ''' 
 
     cursor.execute(command_createUserInfo)
     cursor.execute(command_createUserDefinedMeal) 
