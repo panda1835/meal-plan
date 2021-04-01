@@ -11,12 +11,12 @@ class Model:
 
     command_createUserInfo = '''
         CREATE TABLE IF NOT EXISTS 
-        UserInfo(nutrition_standard TEXT, height INTEGER, weight INTEGER, age INTEGER, meal_list TEXT)
+        UserInfo(ID INTEGER PRIMARY KEY AUTOINCREMENT, nutrition_standard TEXT, height INTEGER, weight INTEGER, age INTEGER, meal_list TEXT)
     ''' 
 
     command_createUserDefinedMeal = ''' 
         CREATE TABLE IF NOT EXISTS
-        UserDefinedMeal(name TEXT, start_time TEXT, end_time TEXT, 
+        UserDefinedMeal(meal_name TEXT, start_time TEXT, end_time TEXT, 
                         set_of_dishes TEXT, nutritious_retriction TEXT, 
                         regular BOOLEAN, flexible BOOLEAN)
     ''' 
@@ -24,14 +24,9 @@ class Model:
     command_createRecipe = '''
         CREATE TABLE IF NOT EXISTS
         Recipe(recipe_name TEXT, serving_size INTEGER, cooking_time INTEGER, tag TEXT,
-                ingredient_name TEXT, amount INT, nutrition_name TEXT,
-                energy INTEGER, steps_taken TEXT)
+                ingredient_name TEXT, amount FLOAT, nutrition_name TEXT,
+                energy FLOAT, steps_taken TEXT)
     '''
-
-    command_createMealPlan = ''' 
-        CREATE TABLE IF NOT EXISTS
-        MealPlan()
-    ''' 
 
     cursor.execute(command_createUserInfo)
     cursor.execute(command_createUserDefinedMeal) 
@@ -42,7 +37,7 @@ class Model:
     def __init__(self):
         pass
 
-    def set_user_info(nutrition_standard, height, weight, age, meal_list,):
+    def set_user_info(UserInfo):
         """
         Store user info from surveys to database
         @param
@@ -60,8 +55,14 @@ class Model:
         age: Int
         meal_list: List<String>
         """
+        nutrition_standard = UserInfo['nutrition_standard']
+        height = UserInfo['height']
+        weight = UserInfo['weight']
+        age = UserInfo['age']
+        meal_list = UserInfo['meal_list']
+
         meal_list = json.dumps(meal_list) #convert into str type
-        Model.cursor.execute('''INSERT INTO UserInfo
+        Model.cursor.execute('''INSERT INTO UserInfo(nutrition_standard, height, weight, age, meal_list)
                         VALUES (?, ?, ?, ?, ?)''',
                         (nutrition_standard, height, weight, age, meal_list)) 
 
@@ -86,13 +87,12 @@ class Model:
         """
         pass
 
-    def set_user_defined_meal(meal_name, time, set_of_dishes,
-                            nutritious_restriction, regular, flexible,):
+    def set_user_defined_meal(UserDefinedMeal):
 
         """
         Store user defined meal to database
         @param
-        name: String
+        meal_name: String
         time: [Int, Int, Int, Int]
         set_of_dishes: List<String> 
         nutritious_restriction: To be determined
@@ -100,14 +100,22 @@ class Model:
         flexible: Bool
         Database: UserDefinedMeal
         @column
-        name: String
+        meal_name: String
         start_time: String (ex "12:00")
         end_time: String (ex "12:00")
         set_of_dishes: String 
         nutritious_restriction: To be determined #string
         regular: Bool
         flexible: Bool
-        """        
+        """
+
+        meal_name = UserDefinedMeal['meal_name']
+        time = UserDefinedMeal['time']
+        set_of_dishes = UserDefinedMeal['set_of_dishes']
+        nutritious_restriction = UserDefinedMeal['nutritious_restriction']
+        regular = UserDefinedMeal['regular']
+        flexible = UserDefinedMeal['flexible']
+
         start_time = str(time[0]) + ":" + str(time[1])
         end_time = str(time[2]) + ":" + str(time[3])
 
@@ -123,8 +131,8 @@ class Model:
 
     def get_user_defined_meal_names():
         # return list of Meal Names in UserDefinedMeal db
-        Model.cursor.execute(''' SELECT name FROM UserDefinedMeal ''' )  
-        data = Model.cursor.fetchall()
+        Model.cursor.execute(''' SELECT * FROM UserInfo ORDER BY ID DESC LIMIT 1 ''' )  
+        data = Model.cursor.fetchone()
         Model.connection.commit()
 
         return data
@@ -133,14 +141,13 @@ class Model:
     def get_user_defined_meal(meal_name):
 
         Model.cursor.execute('''SELECT * FROM UserDefinedMeal
-                                WHERE name = (?)''', (meal_name,))
-        data = Model.cursor.all()
+                                WHERE meal_name = (?)''', (meal_name,))
+        data = Model.cursor.fetchall()
         Model.connection.commit()
 
         return data
 
-    def set_recipe(recipe_name, serving_size, cooking_time, tag,
-                    ingredients, nutritions, steps_taken):
+    def set_recipe(Recipe):
         """
         Store new recipe to database
         @param
@@ -164,6 +171,15 @@ class Model:
         energy: Int
         steps_taken: String
         """
+
+        recipe_name = Recipe['recipe_name']
+        serving_size = Recipe['serving_size']
+        cooking_time = Recipe['cooking_time']
+        tag = Recipe['tag']
+        ingredients = Recipe['ingredients']
+        nutritions = Recipe['nutritions']
+        steps_taken = Recipe['steps_taken']
+
         ingredient_name = ingredients[0]
         amount = ingredients[1]  
         nutrition_name = nutritions[0] 
