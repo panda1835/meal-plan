@@ -5,8 +5,10 @@ TITLEFONT = ("Time New Roman", 15)
 class View(tk.Tk):
 
     # __init__ function for class tkinterApp
-    def __init__(self):
+    def __init__(self, controller):
         
+        self.controller = controller
+
         # __init__ function for class Tk
         tk.Tk.__init__(self)
         self.geometry("500x300")
@@ -19,6 +21,7 @@ class View(tk.Tk):
         container.grid(column = 0, row = 0)
 
         self.user_info = {}
+        self.user_defined_meal = []
 
         # initializing frames to an empty array
         self.frames = {}
@@ -35,6 +38,10 @@ class View(tk.Tk):
             self.frames[F] = frame
 
             frame.grid(row = 0, column = 0, sticky ="nsew")
+        
+        self.user_info["Nutrition"] = self.frames[CreateNutritionPlan]
+        self.user_info["Body"] = self.frames[CreateBodyCondition]
+        self.user_info["Plan"] = self.frames[CreatePlanPeriod]
 
         self.show_frame(CreateNutritionPlan)
 
@@ -47,11 +54,11 @@ class View(tk.Tk):
         frame = self.frames[current_frame]
         frame.tkraise()
 
-    def next(self, main_view, field, info, next_frame):
-        main_view.show_frame(next_frame)
-        for i in range(len(field)):
-            main_view.user_info[field[i]] = info[i].get()
-        print(main_view.user_info)
+    # def next(self, main_view, field, info, next_frame):
+    #     main_view.show_frame(next_frame)
+    #     for i in range(len(field)):
+    #         main_view.user_info[field[i]] = info[i].get()
+    #     print(main_view.user_info)
 class CreateNutritionPlan(tk.Frame):
     '''
     
@@ -66,14 +73,14 @@ class CreateNutritionPlan(tk.Frame):
 
         # the combobox
         valuelist = [1,2,3]
-        nutrition_plan = tk.StringVar()
-        combo_box = ttk.Combobox(parent, width = 15, values = valuelist, textvariable = nutrition_plan)
+        self.nutrition_plan = tk.StringVar()
+        combo_box = ttk.Combobox(parent, width = 15, values = valuelist, textvariable = self.nutrition_plan)
         
         
         # the back & next buttons
         next_but = tk.Button(parent, text ="Next", bg = "Green", relief = "flat", 
-        command = lambda : main_view.next(main_view, ["Plan"], [nutrition_plan], CreateBodyCondition))
-        
+        command = lambda: main_view.show_frame(CreateBodyCondition))
+            
         # make all elements visible by using grid
         parent.grid(column = 0, row = 0)
         title.grid(column = 0, row = 0, columnspan = 3, pady = 10, ipadx = 0)
@@ -110,8 +117,7 @@ class CreateBodyCondition(tk.Frame):
         back_but = tk.Button(parent, text = "Back", bg = "Green", relief = "flat", 
         command = lambda : main_view.show_frame(CreateNutritionPlan))
         next_but = tk.Button(parent, text ="Next", bg = "Green", relief = "flat", 
-        # command = lambda : main_view.show_frame(CreatePlanPeriod))
-        command = lambda : main_view.next(main_view, ["Height", "Weight", "Age"], [height_info, weight_info, age_info], CreatePlanPeriod))
+        command = lambda: main_view.show_frame(CreateUserDefinedMeal))
 
         # make all elements visible by using grid
         parent.grid(column = 0, row = 0)
@@ -146,16 +152,22 @@ class CreatePlanPeriod(tk.Frame):
 
         #the back & next buttons
         back_but = tk.Button(parent, text = "Back", bg = "Green", relief = "flat", 
-        command = lambda : main_view.show_frame(CreateBodyCondition))
-        next_but = tk.Button(parent, text ="Next", bg = "Green", relief = "flat", 
-        command = lambda : main_view.next(main_view, ["Period"], [plan_period], CreateUserDefinedMeal))
+        command = lambda : main_view.show_frame(CreateUserDefinedMeal))
+        save_but = tk.Button(parent, text ="Save", bg = "Green", relief = "flat",
+        command = lambda : self.save_database(main_view))
         
         # make all elements visible by using grid
         parent.grid(column = 0, row = 0)
         title.grid(column = 0, row = 0, columnspan = 3, pady = 10)
         combo_box.grid (column = 1, row = 2, pady = 30)
         back_but.grid(column = 0, row = 3, padx = 15, pady = 10)
-        next_but.grid(column = 2, row = 3, padx = 15, pady = 10)
+        save_but.grid(column = 2, row = 3, padx = 15, pady = 10)
+    
+    def save_database(self, main_view):
+        main_view.controller.save_user_info(main_view.user_info)
+        main_view.controller.save_user_defined_meal(main_view.user_defined_meal)
+        print(main_view.user_info)
+        print(main_view.user_defined_meal)
 
 class CreateUserDefinedMeal(tk.Frame):
 
@@ -182,8 +194,11 @@ class CreateUserDefinedMeal(tk.Frame):
         # the title of the frame
         title = tk.Label(parent,text = "Set plan period", font = TITLEFONT, bg = "white")
         add_but = tk.Button(parent, text = "+", bg = "grey", command = lambda: self.add_sub_defined_meal(scrollable_frame, main_view))
-        back_but = tk.Button(parent, text = "Back", bg = "Green", relief = "flat")
-        next_but = tk.Button(parent, text ="Next", bg = "Green", relief = "flat")
+        back_but = tk.Button(parent, text = "Back", bg = "Green", relief = "flat",
+        command = lambda: main_view.show_frame(CreateBodyCondition))
+        next_but = tk.Button(parent, text ="Next", bg = "Green", relief = "flat",
+        command = lambda: main_view.show_frame(CreatePlanPeriod))
+        
         
         # make all elements visible by using grid
         parent.grid(column = 0, row = 0)
@@ -198,18 +213,20 @@ class CreateUserDefinedMeal(tk.Frame):
         back_but.grid(column = 0, row = 3, padx = 15, pady = 10)
         next_but.grid(column = 2, row = 3, padx = 15, pady = 10)
 
+
     def add_sub_defined_meal(self, scrollable_frame, main_view):
-        print("hello")
-        CreateSubUserDefinedMeal(scrollable_frame, main_view).pack()  
+        new_meal = CreateSubUserDefinedMeal(self, scrollable_frame, main_view)
+        main_view.user_defined_meal.append(new_meal)
+        new_meal.pack() 
 
 class CreateSubUserDefinedMeal(tk.Frame):
 
-    def __init__(self, parent, main_view):
+    def __init__(self, grandparent, parent, main_view):
         tk.Frame.__init__(self, parent)
         parent = tk.Frame(self, bg = "white")
         #instantiate wireframe's components and position them within the frame
 
-        del_meal = tk.Button(parent, text = "-", bg ="white", command = self.destroy, relief = "flat")
+        del_meal = tk.Button(parent, text = "-", bg ="white", command = lambda: self.delete_meal(main_view), relief = "flat")
 
         name_label = tk.Label(parent, text = "Name", bg ="white", anchor = "w", justify="left", pady=5, padx=5)
         name_entry = tk.Entry(parent)
@@ -268,6 +285,10 @@ class CreateSubUserDefinedMeal(tk.Frame):
         regular.grid(column = 4, row = 2)
         flexible.grid(column = 4, row =3)
 
+    def delete_meal(self, main_view):
+        main_view.user_defined_meal.remove(self)
+        self.destroy()
+
     def check_valid_time(self, start_time, end_time):
         '''
         check if start_time happens before end_time
@@ -282,8 +303,4 @@ class CreateSubUserDefinedMeal(tk.Frame):
     #         if self.check_valid_time(start_time, end_time):
     #             print('hi')
 
-
-    
-view = View()
-view.mainloop()
 
