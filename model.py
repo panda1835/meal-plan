@@ -38,23 +38,20 @@ class Model:
         pass
 
     def set_user_info(UserInfo):
-        """
-        Store user info from surveys to database
-        @param
-        ???username:String???
-        nutrition_standard: String
-        height: Int
-        weight: Int
-        age: Int
-        meal_list: List<String>
-        Database: UserInfo
-        @column
-        nutrition_standard: String
-        height: Int
-        weight: Int
-        age: Int
-        meal_list: List<String>
-        """
+        """ 
+
+​	*This function stores the user's information from survey to the meal plan database.* 
+​	@parameters:
+​				UserInfo: a dictionary containing the user's basic information
+​   *Database: UserInfo*
+​	@column:
+​			    nutrition_standard: String: the user's standard for nutrition
+​    			height: Integers: user's height
+​    			weight: Integers: user's weight
+​    			age: Integers: user's age
+​    			meal_list: List [String]: a list of meals
+​	@return: none
+​    """ 
         nutrition_standard = UserInfo['nutrition_standard']
         height = UserInfo['height']
         weight = UserInfo['weight']
@@ -69,6 +66,11 @@ class Model:
         Model.connection.commit()
 
     def get_user_info():
+        """
+​	    *This function fetches the latest update of the user's information from the database*
+​	    @parameters: none
+​	    @return: data: a list of the user's attributes
+        """
         Model.cursor.execute(''' SELECT * FROM UserInfo ''' )  
         data = Model.cursor.fetchall()
         Model.connection.commit()
@@ -88,26 +90,22 @@ class Model:
         pass
 
     def set_user_defined_meal(UserDefinedMeal):
+        """ 
+​       *This function store the user's pre-defined meal to the meal plan database* 
+​       @parameters:
+                UserDefinedMeal: a dictionary containing the attributes of a defined meal
+​       *Database: UserDefinedMeal* 
+​       @column:
+                name: String: the name of the meal
+                start_time: String (ex "12:00"): the meal starting time 
+                end_time: String (ex "12:00"): the meal end time
+                set_of_dishes: String: the types of dishes in this meal
+                nutritious_restriction: To be determined #string
+                regular: Boolean: true or false
+                flexible: Boolean: true or false
+​	    @return: none
 
-        """
-        Store user defined meal to database
-        @param
-        meal_name: String
-        time: [Int, Int, Int, Int]
-        set_of_dishes: List<String> 
-        nutritious_restriction: To be determined
-        regular: Bool
-        flexible: Bool
-        Database: UserDefinedMeal
-        @column
-        meal_name: String
-        start_time: String (ex "12:00")
-        end_time: String (ex "12:00")
-        set_of_dishes: String 
-        nutritious_restriction: To be determined #string
-        regular: Bool
-        flexible: Bool
-        """
+​       """
 
         meal_name = UserDefinedMeal['meal_name']
         time = UserDefinedMeal['time']
@@ -130,6 +128,11 @@ class Model:
         
 
     def get_user_defined_meal_names():
+        """
+​	    *This function returns the meal names from the user's defined meals database*
+​	    @parameters: none
+​	    @return: data
+​	    """ 
         # return list of Meal Names in UserDefinedMeal db
         Model.cursor.execute(''' SELECT * FROM UserInfo ORDER BY ID DESC LIMIT 1 ''' )  
         data = Model.cursor.fetchone()
@@ -139,6 +142,11 @@ class Model:
 
 
     def get_user_defined_meal(meal_name):
+        """
+​	    *This function gets the attributes of the meal from the database based on its name*
+​	    @parameters: meal_name (string): the name of the meal
+​	    @return: a tuple contains the information of meal_name, start_time, end_time, set_of_dishes, nutritious_restriction, regular, flexible 
+​	    """ 
 
         Model.cursor.execute('''SELECT * FROM UserDefinedMeal
                                 WHERE meal_name = (?)''', (meal_name,))
@@ -148,30 +156,23 @@ class Model:
         return data
 
     def set_recipe(Recipe):
-        """
-        Store new recipe to database
-        @param
-        recipe_name: String
-        serving_size: Int
-        cooking_time: Int                 # i think this need to be float
-        tag: String
-        ingredients: (String, Int)
-        nutritions: (String, Int)         # i think this need to be float
-        steps_taken: String
-        
-        Database: Recipe
-        @column
-        recipe_name: String
-        serving_size: Int
-        cooking_time: Int
-        tag: String
-        ingredient_name: String
-        amount: Int
-        nutrition_name: String
-        energy: Int
-        steps_taken: String
-        """
-
+        """ 
+​       *This function stores a new recipe to the recipe database* 
+​       @parameters:
+                Recipe: a dictionary containing the attributes of the recipe
+​       *Database: Recipe* 
+​       @column:
+                recipe_name: String: the name of the recipe
+                serving_size: Integer: the scale of the serving recipe
+                cooking_time: Integer: the required to cook this recipe 
+                tag: String category of the recipe 
+                ingredient_name: String the ingredients contained in the recipe 
+                amount: Float: the amount of the ingredient
+                nutrition_name: String: the name of the nutrition
+                energy: Float: the amount of energy for that meal
+                steps_taken: String: method to cook the recipe 
+​	    @return: none
+​       """ 
         recipe_name = Recipe['recipe_name']
         serving_size = Recipe['serving_size']
         cooking_time = Recipe['cooking_time']
@@ -195,6 +196,11 @@ class Model:
         Model.connection.commit()
 
     def get_recipe_names():
+        """
+​	    This function returns a list of recipe names in the Recipe database 
+​	    @parameters: none
+​	    @return: a tuple contains only recipes’ name in the database 
+​	    """
         # return list of Recipe Names in Recipe db
         Model.cursor.execute(''' SELECT recipe_name FROM Recipe''')
         data = Model.cursor.fetchall()
@@ -202,7 +208,13 @@ class Model:
 
         return data 
 
-    def get_recipe(name):#
+    def get_recipe(name):
+        """
+    ​	This function returns a recipe object whose name is the recipe name 
+    ​	Get the recipe data based on its name, including size of serving, cooking time, ingredient with the amount, and the nutrition with its energy.
+    ​	@parameters: name(String): the name of the recipe
+    ​	@return: a tuple of data contains the information of serving_size , cooking_time , tag, 	ingredient_name, amount , nutrition_name, energy, steps_taken
+    ​	"""
         # return Recipe object whose name is name
         Model.cursor.execute(''' SELECT * FROM Recipe 
                                 WHERE recipe_name = (?) ''', (name,))
