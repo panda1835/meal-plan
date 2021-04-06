@@ -2,15 +2,17 @@ from model import Model
 
 def create():
     UserInfo = {'nutrition_standard': "fat", 'height': 170, 'weight': 37,
-                'age': 26, 'meal_list': ["mom cooking", "anything"]}
+                'age': 26, 'meal_list': ["dad cooking", "anything"]}
+
     UserDefinedMeal = {'meal_name': "morning", 'time': [18,00,20,00],
                         'set_of_dishes': ["chicken soup", "beef rice"],
                         'nutritious_restriction': "idk?", 'regular': False,
                         'flexible': True}
+
     Recipe = {'recipe_name': "chicken soup", 'serving_size': 1,
                 'cooking_time': 1, 'tag': "fast food",
                 'ingredients': ("chicken", 1.0),
-                'nutritions': ("calories", 1.0),
+                'nutritions': ("calories", 3.0),
                 'steps_taken': "take two steps"}
     
     
@@ -29,5 +31,6 @@ def test():
 def deleteRecipe():
     Model.cursor.execute("DROP TABLE Recipe")
 
-create()
-test()
+if __name__ == '__main__':
+    create()
+    test()

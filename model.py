@@ -71,8 +71,8 @@ class Model:
 ​	    @parameters: none
 ​	    @return: data: a list of the user's attributes
         """
-        Model.cursor.execute(''' SELECT * FROM UserInfo ''' )  
-        data = Model.cursor.fetchall()
+        Model.cursor.execute(''' SELECT * FROM UserInfo ORDER BY ID DESC LIMIT 1''' )  
+        data = Model.cursor.fetchone()
         Model.connection.commit()
 
         return data 
@@ -134,8 +134,8 @@ class Model:
 ​	    @return: data
 ​	    """ 
         # return list of Meal Names in UserDefinedMeal db
-        Model.cursor.execute(''' SELECT * FROM UserInfo ORDER BY ID DESC LIMIT 1 ''' )  
-        data = Model.cursor.fetchone()
+        Model.cursor.execute(''' SELECT * FROM UserDefinedMeal''' )  
+        data = Model.cursor.fetchall()
         Model.connection.commit()
 
         return data
