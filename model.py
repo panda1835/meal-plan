@@ -37,7 +37,7 @@ class Model:
     def __init__(self):
         pass
 
-    def set_user_info(UserInfo):
+    def set_user_info(user_info):
         """ 
 
 ​	*This function stores the user's information from survey to the meal plan database.* 
@@ -52,11 +52,11 @@ class Model:
 ​    			meal_list: List [String]: a list of meals
 ​	@return: none
 ​    """ 
-        nutrition_standard = UserInfo['nutrition_standard']
-        height = UserInfo['height']
-        weight = UserInfo['weight']
-        age = UserInfo['age']
-        meal_list = UserInfo['meal_list']
+        nutrition_standard = user_info['nutrition_standard']
+        height = user_info['height']
+        weight = user_info['weight']
+        age = user_info['age']
+        meal_list = user_info['meal_list']
 
         meal_list = json.dumps(meal_list) #convert into str type
         Model.cursor.execute('''INSERT INTO UserInfo(nutrition_standard, height, weight, age, meal_list)
@@ -89,7 +89,8 @@ class Model:
         """
         pass
 
-    def set_user_defined_meal(UserDefinedMeal):
+    def set_user_defined_meal(user_defined_meal
+    ):
         """ 
 ​       *This function store the user's pre-defined meal to the meal plan database* 
 ​       @parameters:
@@ -107,12 +108,12 @@ class Model:
 
 ​       """
 
-        meal_name = UserDefinedMeal['meal_name']
-        time = UserDefinedMeal['time']
-        set_of_dishes = UserDefinedMeal['set_of_dishes']
-        nutritious_restriction = UserDefinedMeal['nutritious_restriction']
-        regular = UserDefinedMeal['regular']
-        flexible = UserDefinedMeal['flexible']
+        meal_name = user_defined_meal['meal_name']
+        time = user_defined_meal['time']
+        set_of_dishes = user_defined_meal['set_of_dishes']
+        nutritious_restriction = user_defined_meal['nutritious_restriction']
+        regular = user_defined_meal['regular']
+        flexible = user_defined_meal['flexible']
 
         start_time = str(time[0]) + ":" + str(time[1])
         end_time = str(time[2]) + ":" + str(time[3])
@@ -155,7 +156,7 @@ class Model:
 
         return data
 
-    def set_recipe(Recipe):
+    def set_recipe(recipe):
         """ 
 ​       *This function stores a new recipe to the recipe database* 
 ​       @parameters:
@@ -173,13 +174,13 @@ class Model:
                 steps_taken: String: method to cook the recipe 
 ​	    @return: none
 ​       """ 
-        recipe_name = Recipe['recipe_name']
-        serving_size = Recipe['serving_size']
-        cooking_time = Recipe['cooking_time']
-        tag = Recipe['tag']
-        ingredients = Recipe['ingredients']
-        nutritions = Recipe['nutritions']
-        steps_taken = Recipe['steps_taken']
+        recipe_name = recipe['recipe_name']
+        serving_size = recipe['serving_size']
+        cooking_time = recipe['cooking_time']
+        tag = recipe['tag']
+        ingredients = recipe['ingredients']
+        nutritions = recipe['nutritions']
+        steps_taken = recipe['steps_taken']
 
         ingredient_name = ingredients[0]
         amount = ingredients[1]  

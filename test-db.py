@@ -1,24 +1,24 @@
 from model import Model
 
 def create():
-    UserInfo = {'nutrition_standard': "fat", 'height': 170, 'weight': 37,
+    user_info = {'nutrition_standard': "fat", 'height': 170, 'weight': 37,
                 'age': 26, 'meal_list': ["dad cooking", "anything"]}
 
-    UserDefinedMeal = {'meal_name': "morning", 'time': [18,00,20,00],
+    user_defined_meal = {'meal_name': "morning", 'time': [18,00,20,00],
                         'set_of_dishes': ["chicken soup", "beef rice"],
                         'nutritious_restriction': "idk?", 'regular': False,
                         'flexible': True}
 
-    Recipe = {'recipe_name': "chicken soup", 'serving_size': 1,
+    recipe = {'recipe_name': "chicken soup", 'serving_size': 1,
                 'cooking_time': 1, 'tag': "fast food",
                 'ingredients': ("chicken", 1.0),
                 'nutritions': ("calories", 3.0),
                 'steps_taken': "take two steps"}
     
     
-    Model.set_user_info(UserInfo)
-    Model.set_user_defined_meal(UserDefinedMeal)
-    Model.set_recipe(Recipe)
+    Model.set_user_info(user_info)
+    Model.set_user_defined_meal(user_defined_meal)
+    Model.set_recipe(recipe)
 
 def test():
     print("__User information__")
