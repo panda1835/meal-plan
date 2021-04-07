@@ -1,11 +1,11 @@
 class Model:
-	def __init__(self):
-		'''
-		Constructor 
-		'''
-		pass
+    def __init__(self):
+        '''
+        Constructor 
+        '''
+        pass
 
-	def set_user_info(self, nutrition_standard,
+    def set_user_info(self, nutrition_standard,
                            height,
                            weight,
                            age,
@@ -140,11 +140,11 @@ class Model:
         """
         Generate new mealplan
         """
-	pass
-  
+    pass
+
     def get_mealplan(self, period):
 
         """
         get mealplan of a specific period
         """
-	pass
+    pass

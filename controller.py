@@ -11,4 +11,4 @@ class Controller:
 		self.view = View(self)
 
 	def main(self):
-		self.view.main() 
+		self.view.mainloop() 
