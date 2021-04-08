@@ -4,10 +4,10 @@ def create():
     user_info = {'nutrition_standard': "fat", 'height': 170, 'weight': 37,
                 'age': 26, 'plan_period': "weekly"}
 
-    defined_meal_list = [{'meal_name': "dinner", 'meal_list': ["abc", "xyz"],'start_time': "18:00", 'end_time': "20:00",
+    defined_meal_list = [{'meal_name': "dinner",'start_time': "18:00", 'end_time': "20:00",
                         'set_of_dishes': ["chicken soup", "beef rice"],
                         'nutritious_restriction': "idk?", 'regular': False,
-                        'flexible': True}, {'meal_name': "morning", 'meal_list':["xyz", "abc"], 'start_time': "07:00", 'end_time': "10:00",
+                        'flexible': True}, {'meal_name': "morning", 'start_time': "07:00", 'end_time': "10:00",
                         'set_of_dishes': ["bread", "banana"],
                         'nutritious_restriction': "idk?", 'regular': True,
                         'flexible': False}]

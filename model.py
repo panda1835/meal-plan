@@ -16,7 +16,7 @@ class Model:
 
     command_create_user_defined_meal = ''' 
         CREATE TABLE IF NOT EXISTS
-        UserDefinedMeal(meal_name TEXT, meal_list TEXT, start_time TEXT, end_time TEXT, 
+        UserDefinedMeal(meal_name TEXT, start_time TEXT, end_time TEXT, 
                         set_of_dishes TEXT, nutritious_retriction TEXT, 
                         regular BOOLEAN, flexible BOOLEAN)
     ''' 
@@ -92,7 +92,6 @@ class Model:
 ​       """
         for user_defined_meal in defined_meal_list:
             meal_name = user_defined_meal['meal_name']
-            meal_list = user_defined_meal['meal_list']
             set_of_dishes = user_defined_meal['set_of_dishes']
             nutritious_restriction = user_defined_meal['nutritious_restriction']
             regular = user_defined_meal['regular']
@@ -100,12 +99,11 @@ class Model:
             start_time = user_defined_meal['start_time']
             end_time = user_defined_meal['end_time']
 
-            meal_list = json.dumps(meal_list) #serialize list datatype
             set_of_dishes = json.dumps(set_of_dishes) #serialize list datatype
 
             Model.cursor.execute('''INSERT INTO UserDefinedMeal
-                            VALUES (?, ?, ?, ?, ?, ?, ?, ?)''',
-                            (meal_name, meal_list, start_time, end_time, set_of_dishes,
+                            VALUES (?, ?, ?, ?, ?, ?, ?)''',
+                            (meal_name, start_time, end_time, set_of_dishes,
                             nutritious_restriction, regular,flexible)) 
 
             Model.connection.commit() 
