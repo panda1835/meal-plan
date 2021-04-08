@@ -9,28 +9,28 @@ class Model:
     #the meal_list has to be string because sqlite cannot store list datatype
     #then using the json library to deserialize the meal list into string type
 
-    command_createUserInfo = '''
+    command_create_user_info = '''
         CREATE TABLE IF NOT EXISTS 
-        UserInfo(ID INTEGER PRIMARY KEY AUTOINCREMENT, nutrition_standard TEXT, height INTEGER, weight INTEGER, age INTEGER, meal_list TEXT)
+        UserInfo(ID INTEGER PRIMARY KEY AUTOINCREMENT, nutrition_standard TEXT, height INTEGER, weight INTEGER, age INTEGER, plan_period TEXT)
     ''' 
 
-    command_createUserDefinedMeal = ''' 
+    command_create_user_defined_meal = ''' 
         CREATE TABLE IF NOT EXISTS
-        UserDefinedMeal(meal_name TEXT, start_time TEXT, end_time TEXT, 
+        UserDefinedMeal(meal_name TEXT, meal_list TEXT, start_time TEXT, end_time TEXT, 
                         set_of_dishes TEXT, nutritious_retriction TEXT, 
                         regular BOOLEAN, flexible BOOLEAN)
     ''' 
 
-    command_createRecipe = '''
+    command_create_recipe = '''
         CREATE TABLE IF NOT EXISTS
         Recipe(recipe_name TEXT, serving_size INTEGER, cooking_time INTEGER, tag TEXT,
                 ingredient_name TEXT, amount FLOAT, nutrition_name TEXT,
                 energy FLOAT, steps_taken TEXT)
     '''
 
-    cursor.execute(command_createUserInfo)
-    cursor.execute(command_createUserDefinedMeal) 
-    cursor.execute(command_createRecipe)
+    cursor.execute(command_create_user_info)
+    cursor.execute(command_create_user_defined_meal) 
+    cursor.execute(command_create_recipe)
 
     connection.commit()
 
@@ -42,26 +42,18 @@ class Model:
 
 ​	*This function stores the user's information from survey to the meal plan database.* 
 ​	@parameters:
-​				UserInfo: a dictionary containing the user's basic information
-​   *Database: UserInfo*
-​	@column:
-​			    nutrition_standard: String: the user's standard for nutrition
-​    			height: Integers: user's height
-​    			weight: Integers: user's weight
-​    			age: Integers: user's age
-​    			meal_list: List [String]: a list of meals
+​				user_info: a dictionary containing the user's basic information
 ​	@return: none
 ​    """ 
         nutrition_standard = user_info['nutrition_standard']
         height = user_info['height']
         weight = user_info['weight']
         age = user_info['age']
-        meal_list = user_info['meal_list']
+        plan_period = user_info['plan_period']
 
-        meal_list = json.dumps(meal_list) #convert into str type
-        Model.cursor.execute('''INSERT INTO UserInfo(nutrition_standard, height, weight, age, meal_list)
+        Model.cursor.execute('''INSERT INTO UserInfo(nutrition_standard, height, weight, age, plan_period)
                         VALUES (?, ?, ?, ?, ?)''',
-                        (nutrition_standard, height, weight, age, meal_list)) 
+                        (nutrition_standard, height, weight, age, plan_period)) 
 
         Model.connection.commit()
 
@@ -69,7 +61,8 @@ class Model:
         """
 ​	    *This function fetches the latest update of the user's information from the database*
 ​	    @parameters: none
-​	    @return: data: a list of the user's attributes
+​	    @return:
+                data: a tuple of the user's attributes: nutrition_standard, height, weight, age, plan_period
         """
         Model.cursor.execute(''' SELECT * FROM UserInfo ORDER BY ID DESC LIMIT 1''' )  
         data = Model.cursor.fetchone()
@@ -89,49 +82,42 @@ class Model:
         """
         pass
 
-    def set_user_defined_meal(user_defined_meal):
+    def set_user_defined_meal(defined_meal_list):
         """ 
 ​       *This function store the user's pre-defined meal to the meal plan database* 
 ​       @parameters:
-                UserDefinedMeal: a dictionary containing the attributes of a defined meal
-​       *Database: UserDefinedMeal* 
-​       @column:
-                name: String: the name of the meal
-                start_time: String (ex "12:00"): the meal starting time 
-                end_time: String (ex "12:00"): the meal end time
-                set_of_dishes: String: the types of dishes in this meal
-                nutritious_restriction: To be determined #string
-                regular: Boolean: true or false
-                flexible: Boolean: true or false
+                user_defined_meal: a dictionary containing the attributes of a defined meal
 ​	    @return: none
 
 ​       """
+        for user_defined_meal in defined_meal_list:
+            meal_name = user_defined_meal['meal_name']
+            meal_list = user_defined_meal['meal_list']
+            set_of_dishes = user_defined_meal['set_of_dishes']
+            nutritious_restriction = user_defined_meal['nutritious_restriction']
+            regular = user_defined_meal['regular']
+            flexible = user_defined_meal['flexible']
+            start_time = user_defined_meal['start_time']
+            end_time = user_defined_meal['end_time']
 
-        meal_name = user_defined_meal['meal_name']
-        time = user_defined_meal['time']
-        set_of_dishes = user_defined_meal['set_of_dishes']
-        nutritious_restriction = user_defined_meal['nutritious_restriction']
-        regular = user_defined_meal['regular']
-        flexible = user_defined_meal['flexible']
+            meal_list = json.dumps(meal_list) #serialize list datatype
+            set_of_dishes = json.dumps(set_of_dishes) #serialize list datatype
 
-        start_time = str(time[0]) + ":" + str(time[1])
-        end_time = str(time[2]) + ":" + str(time[3])
+            Model.cursor.execute('''INSERT INTO UserDefinedMeal
+                            VALUES (?, ?, ?, ?, ?, ?, ?, ?)''',
+                            (meal_name, meal_list, start_time, end_time, set_of_dishes,
+                            nutritious_restriction, regular,flexible)) 
 
-        set_of_dishes = json.dumps(set_of_dishes) #serialize list datatype
-
-        Model.cursor.execute('''INSERT INTO UserDefinedMeal
-                        VALUES (?, ?, ?, ?, ?, ?, ?)''',
-                        (meal_name, start_time, end_time, set_of_dishes,
-                        nutritious_restriction, regular,flexible)) 
-
-        Model.connection.commit() 
+            Model.connection.commit() 
         
 
     def get_user_defined_meal_names():
         """
 ​	    *This function returns the meal names from the user's defined meals database*
 ​	    @parameters: none
-​	    @return: data
+​	    @return: 
+                data: a tuple of user's defined meal attributes:
+                    meal_name, start_time, end_time, set_of_dishes, nutritious_restriction, regular, flexible 
 ​	    """ 
         # return list of Meal Names in UserDefinedMeal db
         Model.cursor.execute(''' SELECT * FROM UserDefinedMeal''' )  
@@ -144,7 +130,8 @@ class Model:
     def get_user_defined_meal(meal_name):
         """
 ​	    *This function gets the attributes of the meal from the database based on its name*
-​	    @parameters: meal_name (string): the name of the meal
+​	    @parameters: 
+                    meal_name: the name of the meal
 ​	    @return: a tuple contains the information of meal_name, start_time, end_time, set_of_dishes, nutritious_restriction, regular, flexible 
 ​	    """ 
 
@@ -159,18 +146,7 @@ class Model:
         """ 
 ​       *This function stores a new recipe to the recipe database* 
 ​       @parameters:
-                Recipe: a dictionary containing the attributes of the recipe
-​       *Database: Recipe* 
-​       @column:
-                recipe_name: String: the name of the recipe
-                serving_size: Integer: the scale of the serving recipe
-                cooking_time: Integer: the required to cook this recipe 
-                tag: String category of the recipe 
-                ingredient_name: String the ingredients contained in the recipe 
-                amount: Float: the amount of the ingredient
-                nutrition_name: String: the name of the nutrition
-                energy: Float: the amount of energy for that meal
-                steps_taken: String: method to cook the recipe 
+                recipe: a dictionary containing the attributes of the recipe
 ​	    @return: none
 ​       """ 
         recipe_name = recipe['recipe_name']
@@ -208,16 +184,19 @@ class Model:
 
         return data 
 
-    def get_recipe(name):
+    def get_recipe(recipe_name):
         """
     ​	This function returns a recipe object whose name is the recipe name 
     ​	Get the recipe data based on its name, including size of serving, cooking time, ingredient with the amount, and the nutrition with its energy.
-    ​	@parameters: name(String): the name of the recipe
-    ​	@return: a tuple of data contains the information of serving_size , cooking_time , tag, 	ingredient_name, amount , nutrition_name, energy, steps_taken
-    ​	"""
+    ​	@parameters:
+                    name: the name of the recipe
+    ​	@return: 
+                data: a tuple of recipe attributes based on the name:
+                    recipe_name, serving_size, cooking_time, tag, ingredient_name, amount, nutrition_name, energy, steps_taken
+        """
         # return Recipe object whose name is name
         Model.cursor.execute(''' SELECT * FROM Recipe 
-                                WHERE recipe_name = (?) ''', (name,))
+                                WHERE recipe_name = (?) ''', (recipe_name,))
         data = Model.cursor.fetchone()
         Model.connection.commit()
         return data
