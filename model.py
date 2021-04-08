@@ -89,8 +89,7 @@ class Model:
         """
         pass
 
-    def set_user_defined_meal(user_defined_meal
-    ):
+    def set_user_defined_meal(user_defined_meal):
         """ 
 ​       *This function store the user's pre-defined meal to the meal plan database* 
 ​       @parameters:
