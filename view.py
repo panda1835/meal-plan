@@ -28,24 +28,22 @@ class View(tk.Tk):
 
         # iterating through a tuple consisting
         # of the different page layouts
-        for F in (CreateNutritionPlan, CreateBodyCondition, CreatePlanPeriod, CreateUserDefinedMeal):
+        for F in (NutritionPlan, BodyCondition, PlanPeriod, UserDefinedMeal):
 
             frame = F(container, self)
 
             # initializing frame of that object from
-            # CreateNutritionPlan, CreateBodyCondition, #CreatePlanPeriod respectively with
+            # NutritionPlan, BodyCondition, #PlanPeriod respectively with
             # for loop
             self.frames[F] = frame
 
             frame.grid(row = 0, column = 0, sticky ="nsew")
         
-        self.user_info["Nutrition"] = self.frames[CreateNutritionPlan]
-        self.user_info["Body"] = self.frames[CreateBodyCondition]
-        self.user_info["Plan"] = self.frames[CreatePlanPeriod]
+        self.user_info["Nutrition"] = self.frames[NutritionPlan]
+        self.user_info["Body"] = self.frames[BodyCondition]
+        self.user_info["Plan"] = self.frames[PlanPeriod]
 
-        self.show_frame(CreateNutritionPlan)
-
-        
+        self.show_frame(NutritionPlan)
 
     # to display the current frame passed as
     # parameter
@@ -54,7 +52,7 @@ class View(tk.Tk):
         frame = self.frames[current_frame]
         frame.tkraise()
 
-class CreateNutritionPlan(tk.Frame):
+class NutritionPlan(tk.Frame):
     '''
     
     '''
@@ -74,7 +72,7 @@ class CreateNutritionPlan(tk.Frame):
         
         # the back & next buttons
         next_but = tk.Button(parent, text ="Next", bg = "Green", relief = "flat", 
-        command = lambda: main_view.show_frame(CreateBodyCondition))
+        command = lambda: main_view.show_frame(BodyCondition))
             
         # make all elements visible by using grid
         parent.grid(column = 0, row = 0)
@@ -83,7 +81,7 @@ class CreateNutritionPlan(tk.Frame):
         next_but.grid(column = 2, row = 3, padx = 15, pady = 10)
 
 
-class CreateBodyCondition(tk.Frame):
+class BodyCondition(tk.Frame):
     '''
     
     '''
@@ -110,9 +108,9 @@ class CreateBodyCondition(tk.Frame):
 
         #the back & next buttons
         back_but = tk.Button(parent, text = "Back", bg = "Green", relief = "flat", 
-        command = lambda : main_view.show_frame(CreateNutritionPlan))
+        command = lambda : main_view.show_frame(NutritionPlan))
         next_but = tk.Button(parent, text ="Next", bg = "Green", relief = "flat", 
-        command = lambda: main_view.show_frame(CreateUserDefinedMeal))
+        command = lambda: main_view.show_frame(UserDefinedMeal))
 
         # make all elements visible by using grid
         parent.grid(column = 0, row = 0)
@@ -126,7 +124,7 @@ class CreateBodyCondition(tk.Frame):
         back_but.grid(column = 0, row = 3, padx = 10, pady = 10)
         next_but.grid(column = 2, row = 3, padx = 10, pady = 10)
 
-class CreatePlanPeriod(tk.Frame):
+class PlanPeriod(tk.Frame):
     '''
     
     '''
@@ -147,7 +145,7 @@ class CreatePlanPeriod(tk.Frame):
 
         #the back & next buttons
         back_but = tk.Button(parent, text = "Back", bg = "Green", relief = "flat", 
-        command = lambda : main_view.show_frame(CreateUserDefinedMeal))
+        command = lambda : main_view.show_frame(UserDefinedMeal))
         save_but = tk.Button(parent, text ="Save", bg = "Green", relief = "flat")
         
         # make all elements visible by using grid
@@ -162,7 +160,7 @@ class CreatePlanPeriod(tk.Frame):
         main_view.controller.save_user_defined_meal(main_view.user_defined_meal)
         
 
-class CreateUserDefinedMeal(tk.Frame):
+class UserDefinedMeal(tk.Frame):
 
     def __init__(self, parent, main_view):
         tk.Frame.__init__(self, parent)
@@ -188,9 +186,9 @@ class CreateUserDefinedMeal(tk.Frame):
         title = tk.Label(parent,text = "Define your meals", font = TITLEFONT, bg = "white")
         add_but = tk.Button(parent, text = "+", bg = "grey", command = lambda: self.add_sub_defined_meal(scrollable_frame, main_view))
         back_but = tk.Button(parent, text = "Back", bg = "Green", relief = "flat",
-        command = lambda: main_view.show_frame(CreateBodyCondition))
+        command = lambda: main_view.show_frame(BodyCondition))
         next_but = tk.Button(parent, text ="Next", bg = "Green", relief = "flat",
-        command = lambda: main_view.show_frame(CreatePlanPeriod))
+        command = lambda: main_view.show_frame(PlanPeriod))
         
         
         # make all elements visible by using grid
@@ -208,11 +206,11 @@ class CreateUserDefinedMeal(tk.Frame):
 
 
     def add_sub_defined_meal(self, scrollable_frame, main_view):
-        new_meal = CreateSubUserDefinedMeal(self, scrollable_frame, main_view)
+        new_meal = SubUserDefinedMeal(self, scrollable_frame, main_view)
         main_view.user_defined_meal.append(new_meal)
         new_meal.pack() 
 
-class CreateSubUserDefinedMeal(tk.Frame):
+class SubUserDefinedMeal(tk.Frame):
 
     def __init__(self, grandparent, parent, main_view):
         tk.Frame.__init__(self, parent)
