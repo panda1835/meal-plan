@@ -39,12 +39,11 @@ class Model:
 
     def set_user_info(user_info):
         """ 
-
-​	*This function stores the user's information from survey to the meal plan database.* 
-​	@parameters:
-​				user_info: a dictionary containing the user's basic information
-​	@return: none
-​    """ 
+        ​This function stores the user's information from survey to the meal plan database.
+        ​@parameters:
+        user_info: a dictionary containing the user's basic information
+        ​@return: none
+        ​""" 
         nutrition_standard = user_info['nutrition_standard']
         height = user_info['height']
         weight = user_info['weight']
@@ -59,10 +58,9 @@ class Model:
 
     def get_user_info():
         """
-​	    *This function fetches the latest update of the user's information from the database*
-​	    @parameters: none
-​	    @return:
-                data: a tuple of the user's attributes: nutrition_standard, height, weight, age, plan_period
+        This function fetches the latest update of the user's information from the database
+​        @parameters: none
+        @return: data - a tuple of the user's attributes (nutrition_standard, height, weight, age, plan_period)
         """
         Model.cursor.execute(''' SELECT * FROM UserInfo ORDER BY ID DESC LIMIT 1''' )  
         data = Model.cursor.fetchone()
@@ -83,11 +81,12 @@ class Model:
         pass
 
     def set_user_defined_meal(defined_meal_list):
-        """ 
-​       *This function store the user's pre-defined meal to the meal plan database* 
-​       @parameters:
-                user_defined_meal: a dictionary containing the attributes of a defined meal
-​	    @return: none
+        """
+        This function store the user's pre-defined meal to the meal plan database
+        @param
+        user_defined_meal: a dictionary containing the attributes of a defined meal
+        user_defined_meal's keys {meal_name, set_of_dishes, nutritious_restriction, regular, flexible, start_time, end_time}
+        @return: none
 
 ​       """
         for user_defined_meal in defined_meal_list:
@@ -111,12 +110,11 @@ class Model:
 
     def get_user_defined_meal_names():
         """
-​	    *This function returns the meal names from the user's defined meals database*
-​	    @parameters: none
-​	    @return: 
-                data: a tuple of user's defined meal attributes:
-                    meal_name, start_time, end_time, set_of_dishes, nutritious_restriction, regular, flexible 
-​	    """ 
+        This function returns the meal names from the user's defined meals database
+        @parameters: none
+        @return: data - a tuple of user's defined meal attributes:
+        (meal_name, start_time, end_time, set_of_dishes, nutritious_restriction, regular, flexible) 
+        """ 
         # return list of Meal Names in UserDefinedMeal db
         Model.cursor.execute(''' SELECT * FROM UserDefinedMeal''' )  
         data = Model.cursor.fetchall()
@@ -127,11 +125,12 @@ class Model:
 
     def get_user_defined_meal(meal_name):
         """
-​	    *This function gets the attributes of the meal from the database based on its name*
-​	    @parameters: 
-                    meal_name: the name of the meal
-​	    @return: a tuple contains the information of meal_name, start_time, end_time, set_of_dishes, nutritious_restriction, regular, flexible 
-​	    """ 
+        This function gets the attributes of the meal from the database based on its name
+        @parameters: 
+        meal_name: the name of the meal
+        @return: a tuple contains the information of 
+        (meal_name, start_time, end_time, set_of_dishes, nutritious_restriction, regular, flexible)
+        """ 
 
         Model.cursor.execute('''SELECT * FROM UserDefinedMeal
                                 WHERE meal_name = (?)''', (meal_name,))
@@ -142,10 +141,11 @@ class Model:
 
     def set_recipe(recipe):
         """ 
-​       *This function stores a new recipe to the recipe database* 
-​       @parameters:
-                recipe: a dictionary containing the attributes of the recipe
-​	    @return: none
+        This function stores a new recipe to the recipe database 
+        @parameters:
+        recipe: a dictionary containing the attributes of the recipe
+        recipe's keys {recipe_name, serving_size, cooking_time, tag, ingredients, nutritions, steps_taken}
+        @return: none
 ​       """ 
         recipe_name = recipe['recipe_name']
         serving_size = recipe['serving_size']
@@ -171,10 +171,10 @@ class Model:
 
     def get_recipe_names():
         """
-​	    This function returns a list of recipe names in the Recipe database 
-​	    @parameters: none
-​	    @return: a tuple contains only recipes’ name in the database 
-​	    """
+        This function returns a list of recipe names in the Recipe database
+        @parameters: none
+        @return: a tuple contains only recipes’ name in the database
+        """
         # return list of Recipe Names in Recipe db
         Model.cursor.execute(''' SELECT recipe_name FROM Recipe''')
         data = Model.cursor.fetchall()
@@ -184,13 +184,12 @@ class Model:
 
     def get_recipe(recipe_name):
         """
-    ​	This function returns a recipe object whose name is the recipe name 
-    ​	Get the recipe data based on its name, including size of serving, cooking time, ingredient with the amount, and the nutrition with its energy.
-    ​	@parameters:
-                    name: the name of the recipe
-    ​	@return: 
-                data: a tuple of recipe attributes based on the name:
-                    recipe_name, serving_size, cooking_time, tag, ingredient_name, amount, nutrition_name, energy, steps_taken
+        This function returns a recipe object whose name is the recipe name 
+        Get the recipe data based on its name, including size of serving, cooking time, ingredient with the amount, and the nutrition with its energy.
+        @parameters:
+        name: the name of the recipe
+        @return: data - a tuple of recipe attributes based on the name:
+        (recipe_name, serving_size, cooking_time, tag, ingredient_name, amount, nutrition_name, energy, steps_taken)
         """
         # return Recipe object whose name is name
         Model.cursor.execute(''' SELECT * FROM Recipe 
