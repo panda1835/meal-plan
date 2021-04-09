@@ -3,6 +3,7 @@ This class creates an Interface for user to input nutrion plan and retrieve inpu
 """
 import tkinter as tk
 from tkinter import ttk
+import BodyCondition
 TITLEFONT = ("Time New Roman", 15)
 
 class NutritionPlan(tk.Frame):

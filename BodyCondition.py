@@ -3,6 +3,7 @@ This class creates an interface for user to input physical conditions of height,
 """
 import tkinter as tk
 from tkinter import ttk
+import NutritionPlan, UserDefinedMeal
 TITLEFONT = ("Time New Roman", 15)
 
 class BodyCondition(tk.Frame):

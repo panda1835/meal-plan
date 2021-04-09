@@ -3,6 +3,7 @@ This class creates an interface for user to input the period for planning meal
 """
 import tkinter as tk
 from tkinter import ttk
+import UserDefinedMeal
 TITLEFONT = ("Time New Roman", 15)
 
 class PlanPeriod(tk.Frame):

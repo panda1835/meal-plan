@@ -3,6 +3,7 @@ This class creates an interface for user to input physical conditions of height,
 """
 import tkinter as tk
 from tkinter import ttk
+import BodyCondition, PlanPeriod
 TITLEFONT = ("Time New Roman", 15)
 
 class UserDefinedMeal(tk.Frame):
@@ -98,8 +99,8 @@ class SubUserDefinedMeal(tk.Frame):
         nutri_entry = tk.Entry(parent, textvariable = self.nutritious_restriction)
         
         #variable to keep track the checkbutton
-        regular  = tk.Checkbutton(parent, text ="Regular", variable = reg, bg ="white")
-        flexible = tk.Checkbutton(parent, text ="Flexible", variable = flex, bg ="white")
+        regular  = tk.Checkbutton(parent, text ="Regular", variable = self.reg, bg ="white")
+        flexible = tk.Checkbutton(parent, text ="Flexible", variable = self.flex, bg ="white")
     
         # make all elements visible by using grid
         parent.grid(column = 0, row = 0)
