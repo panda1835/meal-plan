@@ -3,7 +3,6 @@ This class creates an Interface for user to input nutrion plan and retrieve inpu
 """
 import tkinter as tk
 from tkinter import ttk
-import BodyCondition
 TITLEFONT = ("Time New Roman", 15)
 
 class NutritionPlan(tk.Frame):
@@ -23,7 +22,7 @@ class NutritionPlan(tk.Frame):
         
         # the back & next buttons
         next_but = tk.Button(parent, text ="Next", bg = "Green", relief = "flat", 
-        command = lambda: main_view.show_frame(BodyCondition))
+        command = lambda: main_view.show_frame(main_view.frame_BodyCondition))
             
         # make all elements visible by using grid
         parent.grid(column = 0, row = 0)

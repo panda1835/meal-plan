@@ -3,7 +3,6 @@ This class creates an interface for user to input the period for planning meal
 """
 import tkinter as tk
 from tkinter import ttk
-import UserDefinedMeal
 TITLEFONT = ("Time New Roman", 15)
 
 class PlanPeriod(tk.Frame):
@@ -24,7 +23,7 @@ class PlanPeriod(tk.Frame):
 
         #the back & next buttons
         back_but = tk.Button(parent, text = "Back", bg = "Green", relief = "flat", 
-        command = lambda : main_view.show_frame(UserDefinedMeal))
+        command = lambda : main_view.show_frame(main_view.frame_UserDefinedMeal))
         save_but = tk.Button(parent, text ="Save", bg = "Green", relief = "flat")
         
         # make all elements visible by using grid

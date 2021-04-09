@@ -3,7 +3,6 @@ This class creates an interface for user to input physical conditions of height,
 """
 import tkinter as tk
 from tkinter import ttk
-import BodyCondition, PlanPeriod
 TITLEFONT = ("Time New Roman", 15)
 
 class UserDefinedMeal(tk.Frame):
@@ -32,9 +31,9 @@ class UserDefinedMeal(tk.Frame):
         title = tk.Label(parent,text = "Define your meals", font = TITLEFONT, bg = "white")
         add_but = tk.Button(parent, text = "+", bg = "grey", command = lambda: self.add_sub_defined_meal(scrollable_frame, main_view))
         back_but = tk.Button(parent, text = "Back", bg = "Green", relief = "flat",
-        command = lambda: main_view.show_frame(BodyCondition))
+        command = lambda: main_view.show_frame(main_view.frame_BodyCondition))
         next_but = tk.Button(parent, text ="Next", bg = "Green", relief = "flat",
-        command = lambda: main_view.show_frame(PlanPeriod))
+        command = lambda: main_view.show_frame(main_view.frame_PlanPeriod))
         
         
         # make all elements visible by using grid
