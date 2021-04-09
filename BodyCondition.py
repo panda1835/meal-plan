@@ -28,9 +28,9 @@ class BodyCondition(tk.Frame):
         age_entry = ttk.Entry(parent, width = 10, textvariable = self.age_info)
 
         #the back & next buttons
-        back_but = tk.Button(parent, text = "Back", bg = "Green", relief = "flat", 
+        backbtn = tk.Button(parent, text = "Back", bg = "Green", relief = "flat", 
         command = lambda : main_view.show_frame(main_view.frame_NutritionPlan))
-        next_but = tk.Button(parent, text ="Next", bg = "Green", relief = "flat", 
+        nextbtn = tk.Button(parent, text ="Next", bg = "Green", relief = "flat", 
         command = lambda: main_view.show_frame(main_view.frame_UserDefinedMeal))
 
         # make all elements visible by using grid
@@ -42,5 +42,5 @@ class BodyCondition(tk.Frame):
         age_entry.grid(column = 1, row = 2, padx = 10, pady = 10)
         weight.grid(column = 2, row = 1, padx = 10, pady = 10)
         weight_entry.grid(column = 2, row = 2, padx = 10, pady = 10)
-        back_but.grid(column = 0, row = 3, padx = 10, pady = 10)
-        next_but.grid(column = 2, row = 3, padx = 10, pady = 10)
+        backbtn.grid(column = 0, row = 3, padx = 10, pady = 10)
+        nextbtn.grid(column = 2, row = 3, padx = 10, pady = 10)

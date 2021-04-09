@@ -1,5 +1,5 @@
 """
-This class creates an interface for user to input physical conditions of height, weight, age
+This class creates an interface for user to input 
 """
 import tkinter as tk
 from tkinter import ttk
@@ -29,36 +29,36 @@ class UserDefinedMeal(tk.Frame):
         
         # the title of the frame
         title = tk.Label(parent,text = "Define your meals", font = TITLEFONT, bg = "white")
-        add_but = tk.Button(parent, text = "+", bg = "grey", command = lambda: self.add_sub_defined_meal(scrollable_frame, main_view))
-        back_but = tk.Button(parent, text = "Back", bg = "Green", relief = "flat",
+        addbtn = tk.Button(parent, text = "+", bg = "grey", command = lambda: self.add_sub_defined_meal(scrollable_frame, main_view))
+        backbtn = tk.Button(parent, text = "Back", bg = "Green", relief = "flat",
         command = lambda: main_view.show_frame(main_view.frame_BodyCondition))
-        next_but = tk.Button(parent, text ="Next", bg = "Green", relief = "flat",
+        nextbtn = tk.Button(parent, text ="Next", bg = "Green", relief = "flat",
         command = lambda: main_view.show_frame(main_view.frame_PlanPeriod))
         
         
         # make all elements visible by using grid
         parent.grid(column = 0, row = 0)
         title.grid(column = 0, row = 0, columnspan = 3, pady = 10)
-        add_but.grid(column = 2, row = 0)
+        addbtn.grid(column = 2, row = 0)
 
         container.grid(column = 1, row = 1)
         canvas.pack(side="left", fill="both", expand=True)
         scrollbar.pack(side="right", fill="y")
 
 
-        back_but.grid(column = 0, row = 3, padx = 15, pady = 10)
-        next_but.grid(column = 2, row = 3, padx = 15, pady = 10)
+        backbtn.grid(column = 0, row = 3, padx = 15, pady = 10)
+        nextbtn.grid(column = 2, row = 3, padx = 15, pady = 10)
 
 
     def add_sub_defined_meal(self, scrollable_frame, main_view):
-        new_meal = SubUserDefinedMeal(self, scrollable_frame, main_view)
+        new_meal = SubUserDefinedMeal(scrollable_frame, main_view)
         main_view.user_defined_meal.append(new_meal)
         new_meal.pack() 
 
 class SubUserDefinedMeal(tk.Frame):
 
-    def __init__(self, grandparent, parent, main_view):
-        tk.Frame.__init__(self, parent)
+    def __init__(self, scrollable_frame, main_view):
+        tk.Frame.__init__(self, scrollable_frame)
         parent = tk.Frame(self, bg = "white")
         #instantiate wireframe's components and position them within the frame
 

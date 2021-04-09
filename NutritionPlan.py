@@ -21,11 +21,11 @@ class NutritionPlan(tk.Frame):
         
         
         # the back & next buttons
-        next_but = tk.Button(parent, text ="Next", bg = "Green", relief = "flat", 
+        next_btn = tk.Button(parent, text ="Next", bg = "Green", relief = "flat", 
         command = lambda: main_view.show_frame(main_view.frame_BodyCondition))
             
         # make all elements visible by using grid
         parent.grid(column = 0, row = 0)
         title.grid(column = 0, row = 0, columnspan = 3, pady = 10, ipadx = 0)
         combo_box.grid (column = 1, row = 2, pady = 30)
-        next_but.grid(column = 2, row = 3, padx = 15, pady = 10)
+        next_btn.grid(column = 2, row = 3, padx = 15, pady = 10)

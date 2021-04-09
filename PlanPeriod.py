@@ -22,16 +22,16 @@ class PlanPeriod(tk.Frame):
         combo_box.current(0)
 
         #the back & next buttons
-        back_but = tk.Button(parent, text = "Back", bg = "Green", relief = "flat", 
+        backbtn = tk.Button(parent, text = "Back", bg = "Green", relief = "flat", 
         command = lambda : main_view.show_frame(main_view.frame_UserDefinedMeal))
-        save_but = tk.Button(parent, text ="Save", bg = "Green", relief = "flat")
+        savebtn = tk.Button(parent, text ="Save", bg = "Green", relief = "flat")
         
         # make all elements visible by using grid
         parent.grid(column = 0, row = 0)
         title.grid(column = 0, row = 0, columnspan = 3, pady = 10)
         combo_box.grid (column = 1, row = 2, pady = 30)
-        back_but.grid(column = 0, row = 3, padx = 15, pady = 10)
-        save_but.grid(column = 2, row = 3, padx = 15, pady = 10)
+        backbtn.grid(column = 0, row = 3, padx = 15, pady = 10)
+        savebtn.grid(column = 2, row = 3, padx = 15, pady = 10)
     
     def save_database(self, main_view):
         main_view.controller.save_user_info(main_view.user_info)
