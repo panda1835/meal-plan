@@ -18,6 +18,9 @@ class Controller:
         info['plan_period]'] = user_info["Plan"].plan_period.get()
         Model.set_user_info(info)
         
+    def get_user_info(self):
+        return Model.get_user_info()
+        
     def get_user_defined_meal(self, user_defined_meal):
         return Model.get_user_info()
 

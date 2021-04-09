@@ -40,17 +40,6 @@ class View(tk.Tk):
         self.frame_PlanPeriod.grid(row = 0, column = 0, sticky ="nsew")
         self.frame_UserDefinedMeal = UserDefinedMeal(container, self)
         self.frame_UserDefinedMeal.grid(row = 0, column = 0, sticky ="nsew")
-
-        # for F in (NutritionPlan, BodyCondition, PlanPeriod, UserDefinedMeal):
-
-        #     frame = F(container, self)
-
-        #     # initializing frame of that object from
-        #     # NutritionPlan, BodyCondition, #PlanPeriod respectively with
-        #     # for loop
-        #     self.frames[F] = frame
-
-        #     frame.grid(row = 0, column = 0, sticky ="nsew")
         
         self.user_info["Nutrition"] = self.frame_NutritionPlan
         self.user_info["Body"] = self.frame_BodyCondition
@@ -58,9 +47,6 @@ class View(tk.Tk):
 
         self.show_frame(self.frame_NutritionPlan)
 
-    # to display the current frame passed as
-    # parameter
-    
     def show_frame(self, current_frame):
         current_frame.tkraise()
 
