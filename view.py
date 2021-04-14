@@ -42,10 +42,9 @@ class View(tk.Tk):
         self.frame_UserDefinedMeal = UserDefinedMeal(container, self)
         self.frame_UserDefinedMeal.grid(row = 0, column = 0, sticky ="nsew")
 
-        self.frame_PlanPeriod = PlanPeriod(container, self)
-        
+        self.frame_PlanPeriod = PlanPeriod(container, self)   
         self.frame_PlanPeriod.grid(row = 0, column = 0, sticky ="nsew")
-        
+
         self.user_info["Body"] = self.frame_BodyCondition
         self.user_info["Nutrition"] = self.frame_NutritionPlan
         self.user_info["Plan"] = self.frame_PlanPeriod
