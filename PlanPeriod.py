@@ -16,16 +16,17 @@ class PlanPeriod(tk.Frame):
 
         # the combobox
         valuelist = ["Weekly"]
-        plan_period = tk.StringVar()
+        self.plan_period = tk.StringVar()
         combo_box = ttk.Combobox(parent, width = 15, values = valuelist, 
-        textvariable = plan_period)
+        textvariable = self.plan_period)
         combo_box.current(0)
 
         #the back & next buttons
         backbtn = tk.Button(parent, text = "Back", bg = "Green", relief = "flat", 
         command = lambda : main_view.show_frame(main_view.frame_UserDefinedMeal))
-        savebtn = tk.Button(parent, text ="Save", bg = "Green", relief = "flat")
-        
+        savebtn = tk.Button(parent, text ="Save", bg = "Green", relief = "flat", 
+        command = lambda : self.save_database(main_view))
+
         # make all elements visible by using grid
         parent.grid(column = 0, row = 0)
         title.grid(column = 0, row = 0, columnspan = 3, pady = 10)
@@ -35,5 +36,8 @@ class PlanPeriod(tk.Frame):
     
     def save_database(self, main_view):
         main_view.controller.save_user_info(main_view.user_info)
+        #print(main_view.user_info)
+        #print(main_view.user_defined_meal)
         print(main_view.controller.get_user_info())
         main_view.controller.save_user_defined_meal(main_view.user_defined_meal)
+        print(main_view.controller.get_user_defined_meal())

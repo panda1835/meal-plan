@@ -66,7 +66,7 @@ class SubUserDefinedMeal(tk.Frame):
         self.start_time = tk.StringVar()
         self.end_time = tk.StringVar()
         self.set_of_dishes = tk.StringVar()
-        self.nutritious_restriction = ''
+        self.nutritious_restriction = tk.StringVar()
         self.reg = tk.IntVar()
         self.flex = tk.IntVar()
 
