@@ -1,5 +1,5 @@
 """
-This class creates an interface for user to input 
+This class creates an interface for users to define their meals
 """
 import tkinter as tk
 from tkinter import ttk
@@ -88,8 +88,8 @@ class SubUserDefinedMeal(tk.Frame):
         # time_start_combo.bind("<<ComboboxSelected>>", self.is_checked)
         # time_end_combo.bind("<<ComboboxSelected>>", self.is_checked)
         
-        if isinstance(self.start_time, str):
-            print(self.start_time) 
+        # if isinstance(self.start_time, str):
+        #     print(self.start_time) 
 
         set_dish_label = tk.Label(parent, text = "Set of dishes", bg ="white")
         set_dish_entry = tk.Entry(parent, textvariable = self.set_of_dishes)

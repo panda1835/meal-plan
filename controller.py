@@ -19,17 +19,19 @@ class Controller:
         Model.set_user_info(info)
         
     def get_user_info(self):
-        return Model.get_user_info()
+        print(Model.get_user_info())
         
-    def get_user_defined_meal(self, user_defined_meal):
-        return Model.get_user_info()
+    def get_user_defined_meal(self):
+        print(Model.get_user_defined_meal)
 
     def save_user_defined_meal(self, user_defined_meal):
         defined_meal = {}
         for meal in user_defined_meal:
             defined_meal['meal_name'] = [meal.name]
-            defined_meal['time'] = [meal.name]
-            defined_meal['set_of_dishes'] = [meal.name]
-            defined_meal['nutritious_restriction'] = [meal.name]
-            defined_meal['regular'] = [meal.name]
-            defined_meal['flexible'] = [meal.name]
+            defined_meal['start_time'] = [meal.start_time]
+            defined_meal['end_time'] = [meal.end_time]
+            defined_meal['set_of_dishes'] = [meal.set_of_dishes]
+            defined_meal['nutritious_restriction'] = [meal.nutritious_restriction]
+            defined_meal['regular'] = [meal.reg]
+            defined_meal['flexible'] = [meal.flex]
+            Model.set_user_defined_meal(defined_meal)
