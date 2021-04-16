@@ -9,6 +9,8 @@ class PlanPeriod(tk.Frame):
     def __init__(self, parent, main_view):
         tk.Frame.__init__(self, parent)
         parent = tk.Frame(self, bg = "white")
+        parent.rowconfigure(0, weight=1)
+        parent.columnconfigure(0, weight=1)
 
         # the title of the frame
         title = tk.Label(parent,text = "Set plan period", font = TITLEFONT, 
@@ -36,8 +38,8 @@ class PlanPeriod(tk.Frame):
     
     def save_database(self, main_view):
         main_view.controller.save_user_info(main_view.user_info)
-        #print(main_view.user_info)
-        #print(main_view.user_defined_meal)
         print(main_view.controller.get_user_info())
         main_view.controller.save_user_defined_meal(main_view.user_defined_meal)
         print(main_view.controller.get_user_defined_meal())
+        main_view.show_frame(main_view.frame_Recipe)
+        main_view.show_frame(main_view.frame_MainUI)

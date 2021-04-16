@@ -9,6 +9,7 @@ class BodyCondition(tk.Frame):
     def __init__(self, parent, main_view):
         tk.Frame.__init__(self, parent)
         parent = tk.Frame(self, bg = "white")
+        
 
         #title of the frame
         title = tk.Label(parent,text = "Your body condition", font = TITLEFONT, 

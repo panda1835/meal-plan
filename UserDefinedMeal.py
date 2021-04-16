@@ -10,6 +10,8 @@ class UserDefinedMeal(tk.Frame):
     def __init__(self, parent, main_view):
         tk.Frame.__init__(self, parent)
         parent = tk.Frame(self, bg = "white")
+        parent.rowconfigure(0,weight=1)
+        parent.columnconfigure(0,weight=1)
 
         container = ttk.Frame(parent)
         canvas = tk.Canvas(container)

@@ -7,8 +7,11 @@ TITLEFONT = ("Time New Roman", 15)
 
 class NutritionPlan(tk.Frame):
     def __init__(self, parent, main_view):
+        rootHeight = parent.winfo_height()
+        rootWidth = parent.winfo_width()
         tk.Frame.__init__(self, parent)
-        parent = tk.Frame(self, bg = "white")
+
+        parent = tk.Frame(self, bg = "white", height = rootHeight - 20, width = rootWidth - 20)
 
         # title of the frame
         title = tk.Label(parent, text = "Nutrition Plan Standard ", 
