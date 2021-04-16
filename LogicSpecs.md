@@ -85,18 +85,12 @@ We will explain the functions used in *Model.py.* The following functions are us
 ​    @column: 
 
 ​    						name: String: the name of the meal
-
 ​    						start_time: String (ex "12:00"): the meal starting time 
-
-   						 end_time: String (ex "12:00"): the meal end time
-
-   						 set_of_dishes: String: the types of dishes in this meal
-
-  						  nutritious_restriction: To be determined #string
-
-​    						regular: Boolean: true or false
-
-​    						flexible: Boolean: true or false
+           end_time: String (ex "12:00"): the meal end time
+           set_of_dishes: String: the types of dishes in this meal
+           nutritious_restriction: To be determined #string
+           regular: Boolean: true or false
+           flexible: Boolean: true or false
 
 ​	@return: none
 
