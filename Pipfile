@@ -4,6 +4,8 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+"pdfminer.six" = "*"
+psycopg2 = "*"
 
 [dev-packages]
 

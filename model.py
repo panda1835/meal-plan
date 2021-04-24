@@ -28,11 +28,6 @@ class Model:
                 energy INTEGER, steps_taken TEXT)
     '''
 
-    command_createMealPlan = ''' 
-        CREATE TABLE IF NOT EXISTS
-        MealPlan()
-    ''' 
-
     cursor.execute(command_createUserInfo)
     cursor.execute(command_createUserDefinedMeal) 
     cursor.execute(command_createRecipe)

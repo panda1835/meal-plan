@@ -1,5 +1,4 @@
 import PyPDF2
-import data_func
 import csv
 
 reader = PyPDF2.PdfFileReader("G:/Programming/Meal-Plan/pdf_extract/VTN_FCT_2007.pdf", strict = False)
@@ -16,12 +15,12 @@ output_filename = 'G:/Programming/Meal-Plan/pdf_extract/demo_page.pdf'
 with open(output_filename, 'wb') as output: 
     writer.write(output) 
 
-text = data_func.convert_pdf_to_string('G:/Programming/Meal-Plan/pdf_extract/demo_page.pdf')
-text = text.replace('.', '')
-text = text.replace('\x0c', '')
-table_of_contents_raw = text.split('\n')
-for line in table_of_contents_raw: 
-    print(line.strip())
+# text = data_func.convert_pdf_to_string('G:/Programming/Meal-Plan/pdf_extract/demo_page.pdf')
+# text = text.replace('.', '')
+# text = text.replace('\x0c', '')
+# table_of_contents_raw = text.split('\n')
+# for line in table_of_contents_raw: 
+#     print(line.strip())
 
 # print(" *********************TEXT****************")
 # print(text)

@@ -3,12 +3,15 @@ from pdfminer.converter import PDFPageAggregator
 from pdfminer.pdfpage import PDFPage
 from pdfminer.layout import LTTextBoxHorizontal
 from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter
-from pprint import pprint
 
-title_list = [] 
-title_formatted_list = [] 
-nutrient_name = [] # ["water"] 
-nutrient_list = {} # {"nutrient": ["mg", int amount]} 
+# title_list = [] 
+# title_formatted_list = [] 
+# nutrient_name = [] # ["water"] 
+# nutrient_list = {} # {"nutrient": ["mg", int amount]} 
+
+box_general = [] 
+box_sugar = [] 
+box_micronutrients = [] 
 
 document = open('G:/Programming/Meal-Plan/pdf_extract/demo_page.pdf', 'rb')
 #Create resource manager
@@ -26,34 +29,16 @@ for page in PDFPage.get_pages(document):
     nutri_index = 0 
     nutri_index2 = 0 
 
-    for element in layout:
-        i += 1 
-        if isinstance(element, LTTextBoxHorizontal): 
-            #print(element, "index: ", i)
-            pass 
-        if i == 3: 
-            title = element.get_text().split('\n')
-            text = title[1] 
-            title_list.append(text)
-        if i >= 19 and i<= 63 : 
-            nutrient = element.get_text().rstrip("\n")
-            nutrient_name.append(nutrient)
-            nutrient_list[nutrient] = []
-        if i >= 64 and i <= 108: 
-            if i == 66: 
-                pass 
-            unit = element.get_text().strip("\n")
-            nutrient_list[nutrient_name[nutri_index]].append(unit) 
-            nutri_index += 1 
-        if i >= 109 and i <= 153: 
-            amount = element.get_text().strip("\n")
-            nutrient_list[nutrient_name[nutri_index2]].append(amount)  
-            nutri_index2 += 1 
+    for element in layout: 
+        i+= 1 
+        if i in range(109, 117): 
+            box_general.append(element.get_text().rstrip('\n'))
+        if i in range(133, 140): 
+            box_sugar.append(element.get_text().rstrip('\n'))
+        if i in range(117, 133): 
+            box_micronutrients.append(element.get_text().rstrip('\n'))
+        if i in range(140, 153): 
+            box_micronutrients.append(element.get_text().rstrip('\n'))
 
-for key, value in nutrient_list.items():
-    print(key, value)
-           
-             
-
-        
+nutrient_list = box_general + box_sugar + box_micronutrients
 
