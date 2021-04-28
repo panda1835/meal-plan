@@ -7,10 +7,10 @@ print('Number of pages: ' + str(num_of_pages))
 
 writer = PyPDF2.PdfFileWriter() # writing PDF File out
 
-for page in range(14, 15):  
+for page in range(14, 17):  
     writer.addPage(reader.getPage(page))
 
-output_filename = 'G:/Programming/Meal-Plan/pdf_extract/demo_page.pdf'
+output_filename = 'G:/Programming/Meal-Plan/pdf_extract/demo_page_2.pdf'
 
 with open(output_filename, 'wb') as output: 
     writer.write(output) 
