@@ -31,7 +31,8 @@ class UserDefinedMeal(tk.Frame):
         
         # the title of the frame
         title = tk.Label(parent,text = "Define your meals", font = TITLEFONT, bg = "white")
-        addbtn = tk.Button(parent, text = "+", bg = "grey", command = lambda: self.add_sub_defined_meal(scrollable_frame, main_view))
+        addbtn = tk.Button(parent, text = "+", bg = "grey", 
+        command = lambda: self.add_sub_defined_meal(scrollable_frame, main_view))
         backbtn = tk.Button(parent, text = "Back", bg = "Green", relief = "flat",
         command = lambda: main_view.show_frame(main_view.frame_BodyCondition))
         nextbtn = tk.Button(parent, text ="Next", bg = "Green", relief = "flat",
