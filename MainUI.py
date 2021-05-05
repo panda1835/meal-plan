@@ -17,13 +17,16 @@ class MainUI(tk.Frame):
         parent.rowconfigure(0, weight=1)
         parent.columnconfigure(0, weight=1)
 
-        option = tk.Frame(self)
+        option = tk.Frame(self, borderwidth = 1, bg = 'green')
         option.grid(column = 1, row = 0)
-        taskbar = tk.Frame(self)
+
+        taskbar = tk.Frame(self, borderwidth = 1, bg = 'green')
         taskbar.grid(column = 0, row = 1)
-        placeholder = tk.Frame(self)
+
+        placeholder = tk.Frame(self, borderwidth = 5, bg = 'green')
         placeholder.grid(column = 0, row = 0)
-        content = tk.Frame(self)
+
+        content = tk.Frame(self, borderwidth = 1, bg = 'green')
         content.grid(column = 1, row = 1)
 
 
