@@ -38,8 +38,8 @@ class PlanPeriod(tk.Frame):
     
     def save_database(self, main_view):
         main_view.controller.save_user_info(main_view.user_info)
-        print(main_view.controller.get_user_info())
+        # print(main_view.controller.get_user_info())
         main_view.controller.save_user_defined_meal(main_view.user_defined_meal)
-        print(main_view.controller.get_user_defined_meal())
+        # print(main_view.controller.get_user_defined_meal())
         main_view.show_frame(main_view.frame_Recipe)
         main_view.show_frame(main_view.frame_MainUI)
