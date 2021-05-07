@@ -5,16 +5,16 @@ import tkinter.scrolledtext as tkst
 TITLEFONT = ("Time New Roman", 15)
 
 class Recipe(tk.Frame):
-    def __init__(self, content, parent, main_view):
+    def __init__(self, content, parent, main_view, controller):
         tk.Frame.__init__(self, parent)
         parent = tk.Frame(self, bg = 'white')
         parent.grid(column = 0, row = 0)
 
-        self.frame_Ours = FrameOurRecipeForYou(content, main_view)
+        self.frame_Ours = FrameOurRecipeForYou(content, main_view, controller)
         self.frame_Ours.grid(row = 0, column = 0, sticky ="nsew")
-        self.frame_Yours = FrameYourRecipe(content, main_view)
+        self.frame_Yours = FrameYourRecipe(content, main_view, controller)
         self.frame_Yours.grid(row = 0, column = 0, sticky ="nsew")
-        self.frame_Create = FrameCreateYourRecipe(content, main_view)
+        self.frame_Create = FrameCreateYourRecipe(content, main_view, controller)
         self.frame_Create.grid(row = 0, column = 0, sticky ="nsew")
 
         self.show_frame(self.frame_Ours)
@@ -35,7 +35,7 @@ class Recipe(tk.Frame):
         current_frame.tkraise()
 
 class FrameOurRecipeForYou(tk.Frame):
-    def __init__(self, parent, main_view):
+    def __init__(self, parent, main_view, controller):
         tk.Frame.__init__(self, parent)
         parent = tk.Frame(self, bg = 'white')
         parent.grid(column = 0, row = 0)
@@ -45,7 +45,7 @@ class FrameOurRecipeForYou(tk.Frame):
 
 
 class FrameYourRecipe(tk.Frame):
-    def __init__(self, parent, main_view):
+    def __init__(self, parent, main_view, controller):
 
         tk.Frame.__init__(self, parent)
         parent = tk.Frame(self, bg = 'white')
@@ -55,7 +55,7 @@ class FrameYourRecipe(tk.Frame):
         title.pack()    
 
 class FrameCreateYourRecipe(tk.Frame):
-    def __init__(self, parent, main_view):
+    def __init__(self, parent, main_view, controller):
 
         tk.Frame.__init__(self, parent)
         parent = tk.Frame(self, bg = 'white')
@@ -96,7 +96,7 @@ class FrameCreateYourRecipe(tk.Frame):
         steps_taken_entry = tkst.ScrolledText(parent, wrap=tk.WORD, width = 20, height = 10)
 
         save_btn = ttk.Button(button, text = "Save",
-        command = lambda : main_view.controller.save_recipe(self))
+        command = lambda : controller.save_recipe(self))
 
         recipe_label.grid(column=0, row=0, sticky = 'w')
         recipe_entry.grid(column=1, row=0)
