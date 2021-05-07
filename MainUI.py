@@ -64,27 +64,27 @@ class MainUI(tk.Frame):
         precooked_btn.pack(fill="x")
         setting_btn.pack(fill="x")
 
-        self.frame_NewPlan = NewPlan(content, option, self)
+        self.frame_NewPlan = NewPlan(content, option, self, main_view.controller)
         self.frame_NewPlan.grid(row = 0, column = 0, sticky ="nsew")
         self.frame_NewPlan.columnconfigure(0, weight=1)
         self.frame_NewPlan.rowconfigure(0, weight=1)
 
-        self.frame_Recipe = Recipe(content, option, self)
+        self.frame_Recipe = Recipe(content, option, self, main_view.controller)
         self.frame_Recipe.grid(row = 0, column = 0, sticky ="nsew")
         self.frame_Recipe.columnconfigure(0, weight=1)
         self.frame_Recipe.rowconfigure(0, weight=1)
 
-        self.frame_PrecookedDish = PrecookedDish(content, option, self)
+        self.frame_PrecookedDish = PrecookedDish(content, option, self, main_view.controller)
         self.frame_PrecookedDish.grid(row = 0, column = 0, sticky ="nsew")
         self.frame_PrecookedDish.columnconfigure(0, weight=1)
         self.frame_PrecookedDish.rowconfigure(0, weight=1)
 
-        self.frame_Setting = Setting(content, option, self)
+        self.frame_Setting = Setting(content, option, self, main_view.controller)
         self.frame_Setting.grid(row = 0, column = 0, sticky ="nsew")
         self.frame_Setting.columnconfigure(0, weight=1)
         self.frame_Setting.rowconfigure(0, weight=1)
     
-        self.frame_CurrentPlan = CurrentPlan(content, option, self)
+        self.frame_CurrentPlan = CurrentPlan(content, option, self, main_view.controller)
         self.frame_CurrentPlan.grid(row = 0, column = 0, sticky ="nsew")
         self.frame_CurrentPlan.columnconfigure(0, weight=1)
         self.frame_CurrentPlan.rowconfigure(0, weight=1)
