@@ -3,7 +3,7 @@ from tkinter import ttk
 TITLEFONT = ("Time New Roman", 15)
 
 class CurrentPlan(tk.Frame):
-    def __init__(self, content, option, main_view):
+    def __init__(self, content, option, main_view, controller):
         tk.Frame.__init__(self, option)
         option = tk.Frame(self, bg = 'white')
 
